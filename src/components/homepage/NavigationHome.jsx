@@ -5,19 +5,49 @@ import { LiaSaveSolid } from "react-icons/lia";
 import { MdSkipPrevious } from "react-icons/md";
 
 import "./NavigationHome.css";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { show } from "../../store/clickSlice";
 
 export default function NavigationHome() {
-    return(
-        <div className="w-full h-20 flex text-2xl border-y-4 sticky top-0">
-            <div className="basis-2/5 h-full flex justify-center items-center border-x-2">
-                <FaUserCircle style={{fontSize: "3em", marginRight: "12px"}}/>
-                <p>Ivan Ivanov</p>
-            </div>
-            <div className="basis-3/5 h-full buttons-nav">
-                <button><IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats</button>
-                <button><LiaSaveSolid  className="mr-2 text-3xl"/> Saved</button>
-                <button><MdSkipPrevious  className="mr-2 text-3xl"/> Passed</button>
-            </div>
+  const dispatch = useDispatch();
+  //Gets the value of the window, whether it is shown or not
+  const shownData = useSelector((state) => state.click.shown);
+
+  return (
+    <div className="w-full h-20 flex text-2xl border-y-4 z-50 sticky top-0">
+      {shownData && (
+        <div className="absolute z-40 text-xl flex flex-col justify-between h-auto user-side-nav">
+          <Link to="/logIn">Log in</Link>
+          <Link to="/signUp">Sign up</Link>
         </div>
-    );
+      )}
+      <div className="basis-2/5 h-full flex justify-center items-center border-x-2">
+        <FaUserCircle
+          style={{ fontSize: "3em", marginRight: "12px" }}
+          onClick={(event) => {
+            //Checks if the window is shown in order to prevent activating the global event and show and hide immediately the user window
+            if (!shownData) {
+              event.stopPropagation();
+            }
+            //Calls the show function which manage the state inside clickSlice.js file
+            dispatch(show());
+          }}
+        />
+        <p>Ivan Ivanov</p>
+      </div>
+      <div className="basis-3/5 h-full buttons-nav">
+        <button>
+          <IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats
+        </button>
+        <button>
+          <LiaSaveSolid className="mr-2 text-3xl" /> Saved
+        </button>
+        <button>
+          <MdSkipPrevious className="mr-2 text-3xl" /> Passed
+        </button>
+      </div>
+    </div>
+  );
 }
