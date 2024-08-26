@@ -9,6 +9,7 @@ const useFetch = async (route, method, data) => {
         case "GET":
             if (data) {
                 response = await axios.get(url + route + "/?data=" + encodeURIComponent(JSON.stringify(data)));
+                console.log(response);
             }
             else {
                 response = await axios.get(url + route);
@@ -19,7 +20,7 @@ const useFetch = async (route, method, data) => {
                 response = await axios.post(url + route, data);
             }
             catch (error) {
-                return error.response.data;
+                return error.response;
             }
             break;
         case "PUT":
@@ -28,7 +29,7 @@ const useFetch = async (route, method, data) => {
             break;
     }
 
-    return response.data;
+    return response;
 }
 
 

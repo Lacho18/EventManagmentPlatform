@@ -1,45 +1,50 @@
-import { useState } from "react";
 import useFetch from "../../hooks/useFetch";
+import { useDispatch, useSelector } from "react-redux";
+import { setError, nullError } from "../../store/errorSlice";
+import { useNavigate } from "react-router-dom";
+import { changeHandler } from "../../store/userSlice";
 
 export default function SignUp() {
-  const [newUser, setNewUser] = useState({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    gender: "",
-    dateOfBirth: Date,
-  });
-  const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
+  const errorMessage = useSelector((state) => state.error.errorMessage);
+  const navigate = useNavigate();
 
-  function changeHandler(event) {
-    setNewUser((oldData) => {
-      return { ...oldData, [event.target.name]: event.target.value };
-    });
+  //Variable that takes a sign us data for the user
+  const signUpDataUser = useSelector((state) => state.user.signUpUser);
+
+  //Function that handles every change in the input fields
+  function handleChanges(event) {
+    dispatch(
+      changeHandler({
+        value: event.target.value,
+        fieldName: event.target.name,
+        operation: "signUpUser",
+      })
+    );
   }
 
   async function submitHandler(event) {
     event.preventDefault();
 
-    const keys = Object.keys(newUser);
+    const keys = Object.keys(signUpDataUser);
     let isCorrect = true;
 
     keys.forEach((key) => {
-      if (newUser[key] === "") {
+      if (signUpDataUser[key] === "") {
         isCorrect = false;
-        setErrorMessage("All fields are required");
-
-        setTimeout(() => setErrorMessage(""), 3000);
+        dispatch(setError("All fields are required!"));
+        setTimeout(() => dispatch(nullError()), 3000);
       }
     });
 
     if (isCorrect) {
-      const response = await useFetch("user", "POST", newUser);
+      const response = await useFetch("user", "POST", signUpDataUser);
 
       if (response.status !== 200) {
-        setErrorMessage(response.message);
-
-        setTimeout(() => setErrorMessage(""), 3000);
+        dispatch(setError(response.data.message));
+        setTimeout(() => dispatch(nullError()), 3000);
+      } else {
+        navigate("/logIn");
       }
     }
   }
@@ -56,7 +61,7 @@ export default function SignUp() {
             type="email"
             name="email"
             placeholder="@email"
-            onChange={changeHandler}
+            onChange={handleChanges}
           />
         </div>
         <div className="form-group">
@@ -65,7 +70,7 @@ export default function SignUp() {
             type="password"
             name="password"
             placeholder="password"
-            onChange={changeHandler}
+            onChange={handleChanges}
           />
         </div>
         <div className="form-group">
@@ -76,7 +81,7 @@ export default function SignUp() {
             type="password"
             name="confirmPassword"
             placeholder="Confirm password"
-            onChange={changeHandler}
+            onChange={handleChanges}
           />
         </div>
         <div className="form-group">
@@ -85,7 +90,7 @@ export default function SignUp() {
             type="text"
             name="firstName"
             placeholder="First name"
-            onChange={changeHandler}
+            onChange={handleChanges}
           />
         </div>
         <div className="form-group">
@@ -94,7 +99,7 @@ export default function SignUp() {
             type="text"
             name="lastName"
             placeholder="Last name"
-            onChange={changeHandler}
+            onChange={handleChanges}
           />
         </div>
         <div className="form-group">
@@ -105,7 +110,7 @@ export default function SignUp() {
               type="radio"
               name="gender"
               value="male"
-              onChange={changeHandler}
+              onChange={handleChanges}
             />
           </div>
           <div className="flex">
@@ -114,7 +119,7 @@ export default function SignUp() {
               type="radio"
               name="gender"
               value="female"
-              onChange={changeHandler}
+              onChange={handleChanges}
             />
           </div>
         </div>
@@ -124,7 +129,7 @@ export default function SignUp() {
             type="date"
             name="dateOfBirth"
             placeholder="Date"
-            onChange={changeHandler}
+            onChange={handleChanges}
           />
         </div>
 

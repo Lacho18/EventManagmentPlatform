@@ -12,8 +12,12 @@ import { show } from "../../store/clickSlice";
 
 export default function NavigationHome() {
   const dispatch = useDispatch();
+
   //Gets the value of the window, whether it is shown or not
   const shownData = useSelector((state) => state.click.shown);
+
+  //Gets the data of a user if he has logged in and empty object {} if he is not
+  const userData = useSelector((state) => state.user.userData);
 
   return (
     <div className="w-full h-20 flex text-2xl border-y-4 z-50 sticky top-0">
@@ -35,7 +39,15 @@ export default function NavigationHome() {
             dispatch(show());
           }}
         />
-        <p>Ivan Ivanov</p>
+        <p>
+          {userData.firstName ? (
+            `${userData.firstName} ${userData.lastName}`
+          ) : (
+            <Link className="underline" to="/logIn">
+              Log in
+            </Link>
+          )}
+        </p>
       </div>
       <div className="basis-3/5 h-full buttons-nav">
         <button>

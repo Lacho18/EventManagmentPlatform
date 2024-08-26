@@ -1,49 +1,51 @@
-import { useState } from "react";
 import "./LogIn.css";
 import useFetch from "../../hooks/useFetch";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn, changeHandler } from "../../store/userSlice";
+import { setError, nullError } from "../../store/errorSlice";
+import { useNavigate } from "react-router";
 
 export default function LogIn() {
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const errorMessage = useSelector((state) => state.error.errorMessage);
 
-  function changeHandler(event) {
-    setLoginData((oldData) => {
-      return { ...oldData, [event.target.name]: event.target.value };
-    });
-  }
+  //Variable that takes a login data for the user
+  const loginDataUser = useSelector((state) => state.user.loginUser);
 
   async function submitHandler(event) {
     event.preventDefault();
 
-    const keys = Object.keys(loginData);
+    const keys = Object.keys(loginDataUser);
     let isCorrect = true;
 
     keys.forEach((key) => {
-      if (loginData[key] === "") {
+      if (loginDataUser[key] === "") {
         isCorrect = false;
-        //setErrorMessage("All fields are required");
-
-        //setTimeout(() => setErrorMessage(""), 3000);
+        dispatch(setError("All fields are required!"));
+        setTimeout(() => dispatch(nullError()), 3000);
       }
     });
 
     if (isCorrect) {
-      const response = await useFetch("user", "GET", loginData);
-      console.log(response.user);
+      const response = await useFetch("user", "GET", loginDataUser);
+      console.log(response);
 
-      if (response.status !== 200) {
-        //setErrorMessage(response.message);
-        //setTimeout(() => setErrorMessage(""), 3000);
+      if (response.status === 200) {
+        dispatch(logIn(response.data.user));
+        navigate("/");
       } else {
-        console.log(response.user);
+        dispatch(setError(response.data.message));
+        setTimeout(() => dispatch(nullError()), 3000);
       }
     }
   }
 
   return (
     <div className="w-screen h-screen bg-gray-200 flex justify-center items-center">
+      {errorMessage !== "" && (
+        <p className="text-red-600 font-bold absolute">{errorMessage}</p>
+      )}
       <form
         className="flex flex-col justify-center w-2/5 h-auto form-container"
         onSubmit={submitHandler}
@@ -54,7 +56,15 @@ export default function LogIn() {
             type="email"
             name="email"
             placeholder="@email"
-            onChange={changeHandler}
+            onChange={(event) => {
+              dispatch(
+                changeHandler({
+                  value: event.target.value,
+                  fieldName: event.target.name,
+                  operation: "loginUser",
+                })
+              );
+            }}
           />
         </div>
 
@@ -64,7 +74,15 @@ export default function LogIn() {
             type="password"
             name="password"
             placeholder="password"
-            onChange={changeHandler}
+            onChange={(event) => {
+              dispatch(
+                changeHandler({
+                  value: event.target.value,
+                  fieldName: event.target.name,
+                  operation: "loginUser",
+                })
+              );
+            }}
           />
         </div>
 
