@@ -8,8 +8,13 @@ const useFetch = async (route, method, data) => {
     switch (method) {
         case "GET":
             if (data) {
-                response = await axios.get(url + route + "/?data=" + encodeURIComponent(JSON.stringify(data)));
-                console.log(response);
+                console.log(data);
+                try {
+                    response = await axios.get(url + route + "/?data=" + encodeURIComponent(JSON.stringify(data)));
+                } catch (error) {
+                    console.log(error.response);
+                    return error.response;
+                }
             }
             else {
                 response = await axios.get(url + route);

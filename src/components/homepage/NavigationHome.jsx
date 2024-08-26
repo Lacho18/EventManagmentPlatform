@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { show } from "../../store/clickSlice";
 
+import { logOut } from "../../store/userSlice";
+import { toggleWindow, changeColor } from "../../store/themeColorSlice";
+
 export default function NavigationHome() {
   const dispatch = useDispatch();
 
@@ -19,15 +22,64 @@ export default function NavigationHome() {
   //Gets the data of a user if he has logged in and empty object {} if he is not
   const userData = useSelector((state) => state.user.userData);
 
+  //Variable that has the data for the theme colors on the side
+  const themeColorsData = useSelector((state) => state.themeColor);
+
+  function changeThemeColor(event, selectedOption) {
+    dispatch(changeColor({ selection: selectedOption }));
+  }
+
   return (
-    <div className="w-full h-20 flex text-2xl border-y-4 z-50 sticky top-0">
+    <div
+      className="w-full h-20 flex text-2xl border-b-4 z-50 sticky top-0"
+      style={{
+        backgroundColor: themeColorsData.color.easyColor,
+        borderColor: themeColorsData.color.hardColor,
+      }}
+    >
       {shownData && (
         <div className="absolute z-40 text-xl flex flex-col justify-between h-auto user-side-nav">
-          <Link to="/logIn">Log in</Link>
-          <Link to="/signUp">Sign up</Link>
+          {Object.keys(userData).length !== 0 ? (
+            <div className="flex flex-col nav-user-window">
+              <button onClick={() => dispatch(logOut())}>Log out</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dispatch(toggleWindow());
+                }}
+              >
+                Theme color
+              </button>
+              {themeColorsData.sideWindow && (
+                <div className="absolute top-16 left-full ml-4 bg-gray-300 flex">
+                  {themeColorsData.options.map((option) => (
+                    <button
+                      key={option.color}
+                      onClick={(e) => changeThemeColor(e, option.color)}
+                      style={{
+                        width: "18px",
+                        height: "18px",
+                        backgroundColor: `${option.color}`,
+                      }}
+                    ></button>
+                  ))}
+                </div>
+              )}
+              <button>Update profile</button>
+              <button>View chats</button>
+            </div>
+          ) : (
+            <div className="flex flex-col nav-user-window">
+              <Link to="/logIn">Log in</Link>
+              <Link to="/signUp">Sign up</Link>
+            </div>
+          )}
         </div>
       )}
-      <div className="basis-2/5 h-full flex justify-center items-center border-x-2">
+      <div
+        className="basis-2/5 h-full flex justify-center items-center border-x-2"
+        style={{ borderColor: themeColorsData.color.hardColor }}
+      >
         <FaUserCircle
           style={{ fontSize: "3em", marginRight: "12px" }}
           onClick={(event) => {

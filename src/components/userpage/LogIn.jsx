@@ -1,7 +1,7 @@
 import "./LogIn.css";
 import useFetch from "../../hooks/useFetch";
 import { useDispatch, useSelector } from "react-redux";
-import { logIn, changeHandler } from "../../store/userSlice";
+import { logIn, changeHandler, nullData } from "../../store/userSlice";
 import { setError, nullError } from "../../store/errorSlice";
 import { useNavigate } from "react-router";
 
@@ -27,14 +27,21 @@ export default function LogIn() {
       }
     });
 
+    if (Object.keys(loginDataUser).length === 0) {
+      isCorrect = false;
+      dispatch(setError("All fields are required!"));
+      setTimeout(() => dispatch(nullError()), 3000);
+    }
+
     if (isCorrect) {
       const response = await useFetch("user", "GET", loginDataUser);
-      console.log(response);
 
       if (response.status === 200) {
         dispatch(logIn(response.data.user));
+        dispatch(nullData({ operation: "loginUser" }));
         navigate("/");
       } else {
+        console.log(response);
         dispatch(setError(response.data.message));
         setTimeout(() => dispatch(nullError()), 3000);
       }

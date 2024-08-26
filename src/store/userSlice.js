@@ -29,8 +29,11 @@ const userSlice = createSlice({
         changeHandler: (state, action) => {
             state[action.payload.operation][action.payload.fieldName] = action.payload.value;
         },
+        nullData: (state, action) => {
+            state[action.payload.operation] = {};
+        }
     },
 });
 
-export const { logIn, logOut, changeHandler } = userSlice.actions;
+export const { logIn, logOut, changeHandler, nullData } = userSlice.actions;
 export default userSlice.reducer;

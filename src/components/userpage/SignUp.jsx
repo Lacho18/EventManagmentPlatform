@@ -2,7 +2,7 @@ import useFetch from "../../hooks/useFetch";
 import { useDispatch, useSelector } from "react-redux";
 import { setError, nullError } from "../../store/errorSlice";
 import { useNavigate } from "react-router-dom";
-import { changeHandler } from "../../store/userSlice";
+import { changeHandler, nullData } from "../../store/userSlice";
 
 export default function SignUp() {
   const dispatch = useDispatch();
@@ -29,6 +29,12 @@ export default function SignUp() {
     const keys = Object.keys(signUpDataUser);
     let isCorrect = true;
 
+    if (keys.length < 7) {
+      isCorrect = false;
+      dispatch(setError("All fields are required!"));
+      setTimeout(() => dispatch(nullError()), 3000);
+    }
+
     keys.forEach((key) => {
       if (signUpDataUser[key] === "") {
         isCorrect = false;
@@ -44,6 +50,7 @@ export default function SignUp() {
         dispatch(setError(response.data.message));
         setTimeout(() => dispatch(nullError()), 3000);
       } else {
+        dispatch(nullData({ operation: "signUpUser" }));
         navigate("/logIn");
       }
     }
