@@ -15,7 +15,7 @@ export default function Home() {
       }}
     >
       <NavigationHome />
-      <div className="flex w-full">
+      <div className="flex w-full mt-20">
         <Filters />
         <EventsView />
       </div>

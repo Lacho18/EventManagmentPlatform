@@ -5,6 +5,7 @@ import SignUp from "./components/userpage/SignUp";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { hide } from "./store/clickSlice";
+import EventPage from "./components/eventsComponents/EventPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/event/:id" element={<EventPage />} />
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/signUp" element={<SignUp />} />
       </Routes>

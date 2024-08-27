@@ -31,7 +31,7 @@ export default function NavigationHome() {
 
   return (
     <div
-      className="w-full h-20 flex text-2xl border-b-4 z-50 sticky top-0"
+      className="w-full h-20 flex text-2xl border-b-4 z-50 fixed top-0"
       style={{
         backgroundColor: themeColorsData.color.easyColor,
         borderColor: themeColorsData.color.hardColor,

@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import "./EventHomepage.css";
 import { FaLocationDot } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 export default function EventHomepage({ event }) {
+  const navigate = useNavigate();
   const location = event.location;
 
   //Handling the date object ---------------------------------
@@ -30,6 +32,7 @@ export default function EventHomepage({ event }) {
         border: `3px solid ${color.heavyColor}`,
         backgroundColor: color.lightColor,
       }}
+      onClick={() => navigate("/event/" + event.id)}
     >
       <div className="flex flex-col basis-2/12 justify-center items-center">
         <img className="self-center" src={event.image} />
