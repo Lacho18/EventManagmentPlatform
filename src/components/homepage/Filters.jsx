@@ -5,7 +5,7 @@ export default function Filters() {
 
   return (
     <div
-      className={`w-3/12  sticky flex flex-col border-x-4`}
+      className={`w-2/12 fixed flex flex-col border-x-4 `}
       style={{
         height: "624px",
         backgroundColor: color.lightColor,

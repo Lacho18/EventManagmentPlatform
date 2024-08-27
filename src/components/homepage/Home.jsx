@@ -8,11 +8,14 @@ export default function Home() {
   console.log(color);
   return (
     <div
-      className="w-screen h-scree"
-      style={{ color: color.color === "black" ? "white" : "black" }}
+      className="w-screen h-scree overflow-hidden"
+      style={{
+        color: color.color === "black" ? "white" : "black",
+        backgroundColor: color.lightColor,
+      }}
     >
       <NavigationHome />
-      <div className="flex">
+      <div className="flex w-full">
         <Filters />
         <EventsView />
       </div>

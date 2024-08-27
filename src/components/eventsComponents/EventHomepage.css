@@ -1,0 +1,14 @@
+.main-div-event-home {
+    margin: 4px 8px;
+    padding: 5px;
+}
+
+.main-div-event-home img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.org-text {
+    margin-top: -8px;
+}
