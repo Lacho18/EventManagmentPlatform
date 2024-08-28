@@ -35,7 +35,7 @@ export default function EventHomepage({ event }) {
       onClick={() => navigate("/event/" + event.id)}
     >
       <div className="flex flex-col basis-2/12 justify-center items-center">
-        <img className="self-center" src={event.image} />
+        <img className="self-center" src={event.image[0]} />
       </div>
       <div className="basis-7/12 flex flex-col">
         <p className="text-gray-400 italic org-text text-sm basis-1/12 ml-5">

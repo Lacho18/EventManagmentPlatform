@@ -10,7 +10,6 @@ export default function Home() {
     <div
       className="w-screen h-scree overflow-hidden"
       style={{
-        color: color.color === "black" ? "white" : "black",
         backgroundColor: color.lightColor,
       }}
     >

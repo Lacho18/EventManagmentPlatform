@@ -3,6 +3,7 @@ import clickReducer from './clickSlice';
 import userReducer from './userSlice';
 import errorReducer from './errorSlice';
 import themeColorReducer from './themeColorSlice';
+import loadingReducer from './loadingSlice';
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         user: userReducer,
         error: errorReducer,
         themeColor: themeColorReducer,
+        loading: loadingReducer,
     },
 });
 

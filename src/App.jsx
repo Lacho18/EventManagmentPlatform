@@ -6,9 +6,11 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { hide } from "./store/clickSlice";
 import EventPage from "./components/eventsComponents/EventPage";
+import { useSelector } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
+  const color = useSelector((state) => state.themeColor.color);
 
   useEffect(() => {
     const handleClick = () => {
@@ -23,7 +25,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div style={{ color: color.color === "black" ? "white" : "black" }}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/event/:id" element={<EventPage />} />
