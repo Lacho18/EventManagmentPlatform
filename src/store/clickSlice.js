@@ -7,14 +7,12 @@ const clickSlice = createSlice({
     },
     reducers: {
         hide: (state) => {
-            console.log("I clicked");
             if (state.shown === true) {
 
                 state.shown = false;
             }
         },
         show: (state) => {
-            console.log("I clicked and set it to true");
             if (state.shown === false) {
                 state.shown = true;
             }

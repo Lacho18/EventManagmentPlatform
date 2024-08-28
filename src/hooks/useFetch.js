@@ -29,6 +29,12 @@ const useFetch = async (route, method, data) => {
             }
             break;
         case "PUT":
+            try {
+                response = await axios.put(url + route, data);
+            }
+            catch (error) {
+                return error.response;
+            }
             break;
         case "DELETE":
             break;

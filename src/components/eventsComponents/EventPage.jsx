@@ -7,8 +7,6 @@ import useDateFormat from "../../hooks/useDateFormat";
 import { FaLocationDot } from "react-icons/fa6";
 
 /*
-    4. Napravi getRequestHandler funciqta po abstraktna i q implementiray v userControler
-    5. Napravi malko po vidimo che moje da se natiskat subitiqta v Home stranicata
     6?. Dobavi fyncionalnost za redactirane na profil
 */
 

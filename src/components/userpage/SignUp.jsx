@@ -140,7 +140,7 @@ export default function SignUp() {
           />
         </div>
 
-        <button className="submit-btn">Log in</button>
+        <button className="submit-btn">Sign up</button>
       </form>
     </div>
   );

@@ -65,7 +65,7 @@ export default function NavigationHome() {
                   ))}
                 </div>
               )}
-              <button>Update profile</button>
+              <Link to="/updateUser">Update profile</Link>
               <button>View chats</button>
             </div>
           ) : (

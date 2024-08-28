@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { hide } from "./store/clickSlice";
 import EventPage from "./components/eventsComponents/EventPage";
 import { useSelector } from "react-redux";
+import UpdateUser from "./components/userpage/UpdateUser";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/event/:id" element={<EventPage />} />
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/updateUser" element={<UpdateUser />} />
       </Routes>
     </div>
   );

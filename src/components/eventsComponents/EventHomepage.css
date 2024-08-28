@@ -1,6 +1,7 @@
 .main-div-event-home {
     margin: 4px 8px;
     padding: 5px;
+    cursor: pointer;
 }
 
 .main-div-event-home img {
