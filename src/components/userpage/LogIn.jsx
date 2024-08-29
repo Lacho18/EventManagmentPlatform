@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logIn, changeHandler, nullData } from "../../store/userSlice";
 import { setError, nullError } from "../../store/errorSlice";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export default function LogIn() {
   const dispatch = useDispatch();
@@ -12,6 +13,16 @@ export default function LogIn() {
 
   //Variable that takes a login data for the user
   const loginDataUser = useSelector((state) => state.user.loginUser);
+
+  const color = useSelector((state) => state.themeColor.color);
+
+  useEffect(() => {
+    const labels = document.getElementsByTagName("label");
+
+    for (let i = 0; i < labels.length; i++) {
+      labels[i].style.color = color.color === "black" ? "white" : "black";
+    }
+  }, []);
 
   async function submitHandler(event) {
     event.preventDefault();
@@ -49,13 +60,17 @@ export default function LogIn() {
   }
 
   return (
-    <div className="w-screen h-screen bg-gray-200 flex justify-center items-center">
+    <div
+      className="w-screen h-screen bg-gray-200 flex justify-center items-center"
+      style={{ backgroundColor: color.hardColor }}
+    >
       {errorMessage !== "" && (
         <p className="text-red-600 font-bold absolute">{errorMessage}</p>
       )}
       <form
         className="flex flex-col justify-center w-2/5 h-auto form-container"
         onSubmit={submitHandler}
+        style={{ backgroundColor: color.lightColor }}
       >
         <div className="form-group">
           <label htmlFor="email">Enter your email</label>
@@ -63,6 +78,10 @@ export default function LogIn() {
             type="email"
             name="email"
             placeholder="@email"
+            style={{
+              color: color.color === "black" ? "white" : color.heavyColor,
+              backgroundColor: color.lightColor,
+            }}
             onChange={(event) => {
               dispatch(
                 changeHandler({
@@ -81,6 +100,10 @@ export default function LogIn() {
             type="password"
             name="password"
             placeholder="password"
+            style={{
+              color: color.color === "black" ? "white" : color.heavyColor,
+              backgroundColor: color.lightColor,
+            }}
             onChange={(event) => {
               dispatch(
                 changeHandler({
@@ -93,7 +116,15 @@ export default function LogIn() {
           />
         </div>
 
-        <button className="submit-btn">Log in</button>
+        <button
+          className="submit-btn"
+          style={{
+            backgroundColor: color.color,
+            color: color.color === "black" ? "white" : "black",
+          }}
+        >
+          Log in
+        </button>
       </form>
     </div>
   );

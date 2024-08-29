@@ -1,5 +1,6 @@
 .buttons-nav,
-.buttons-nav>button {
+.buttons-nav button,
+.buttons-nav a {
     display: flex;
     justify-content: space-between;
 }
@@ -9,11 +10,13 @@
     align-items: center;
 }
 
-.buttons-nav>button {
+.buttons-nav button,
+.buttons-nav a {
     padding: 3px;
 }
 
-.buttons-nav>button:hover {
+.buttons-nav button:hover,
+.buttons-nav a:hover {
     border: 2px solid rgb(190, 190, 190);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
     border-radius: 7px;

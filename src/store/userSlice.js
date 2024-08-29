@@ -20,6 +20,7 @@ const userSlice = createSlice({
     },
     reducers: {
         logIn: (state, action) => {
+            console.log(action.payload);
             state.userData = action.payload;
         },
         logOut: (state) => {

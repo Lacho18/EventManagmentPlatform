@@ -6,10 +6,6 @@ import { setLoading } from "../../store/loadingSlice";
 import useDateFormat from "../../hooks/useDateFormat";
 import { FaLocationDot } from "react-icons/fa6";
 
-/*
-    6?. Dobavi fyncionalnost za redactirane na profil
-*/
-
 export default function EventPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -137,6 +133,7 @@ export default function EventPage() {
                 {eventData.image.map((singleImage, index) => {
                   return (
                     <div
+                      key={index}
                       style={{
                         width: "10px",
                         height: "10px",

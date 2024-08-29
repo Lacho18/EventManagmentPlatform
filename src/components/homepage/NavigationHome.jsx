@@ -3,6 +3,8 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { LiaSaveSolid } from "react-icons/lia";
 import { MdSkipPrevious } from "react-icons/md";
+import { IoMdAddCircle } from "react-icons/io";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 import "./NavigationHome.css";
 import { Link } from "react-router-dom";
@@ -10,8 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { show } from "../../store/clickSlice";
 
-import { logOut } from "../../store/userSlice";
-import { toggleWindow, changeColor } from "../../store/themeColorSlice";
+import OptionsWindow from "./NavigationHomeComp/OptionsWindow";
 
 export default function NavigationHome() {
   const dispatch = useDispatch();
@@ -25,10 +26,6 @@ export default function NavigationHome() {
   //Variable that has the data for the theme colors on the side
   const themeColorsData = useSelector((state) => state.themeColor);
 
-  function changeThemeColor(event, selectedOption) {
-    dispatch(changeColor({ selection: selectedOption }));
-  }
-
   return (
     <div
       className="w-full h-20 flex text-2xl border-b-4 z-50 fixed top-0"
@@ -37,45 +34,11 @@ export default function NavigationHome() {
         borderColor: themeColorsData.color.hardColor,
       }}
     >
-      {shownData && (
-        <div className="absolute z-40 text-xl flex flex-col justify-between h-auto user-side-nav">
-          {Object.keys(userData).length !== 0 ? (
-            <div className="flex flex-col nav-user-window">
-              <button onClick={() => dispatch(logOut())}>Log out</button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  dispatch(toggleWindow());
-                }}
-              >
-                Theme color
-              </button>
-              {themeColorsData.sideWindow && (
-                <div className="absolute top-16 left-full ml-4 bg-gray-300 flex">
-                  {themeColorsData.options.map((option) => (
-                    <button
-                      key={option.color}
-                      onClick={(e) => changeThemeColor(e, option.color)}
-                      style={{
-                        width: "18px",
-                        height: "18px",
-                        backgroundColor: `${option.color}`,
-                      }}
-                    ></button>
-                  ))}
-                </div>
-              )}
-              <Link to="/updateUser">Update profile</Link>
-              <button>View chats</button>
-            </div>
-          ) : (
-            <div className="flex flex-col nav-user-window">
-              <Link to="/logIn">Log in</Link>
-              <Link to="/signUp">Sign up</Link>
-            </div>
-          )}
-        </div>
-      )}
+      {
+        /*The window that shows when clicking on the user icon*/ shownData && (
+          <OptionsWindow userData={userData} />
+        )
+      }
       <div
         className="basis-2/5 h-full flex justify-center items-center border-x-2"
         style={{ borderColor: themeColorsData.color.hardColor }}
@@ -101,17 +64,34 @@ export default function NavigationHome() {
           )}
         </p>
       </div>
-      <div className="basis-3/5 h-full buttons-nav">
-        <button>
-          <IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats
-        </button>
-        <button>
-          <LiaSaveSolid className="mr-2 text-3xl" /> Saved
-        </button>
-        <button>
-          <MdSkipPrevious className="mr-2 text-3xl" /> Passed
-        </button>
-      </div>
+
+      {Object.keys(userData).length === 0 ? (
+        <p className="basis-3/5 h-full flex justify-center items-center underline italic">
+          Log in to use the application features
+        </p>
+      ) : (
+        <div className="basis-3/5 h-full buttons-nav">
+          <button>
+            <IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats
+          </button>
+          <button>
+            <LiaSaveSolid className="mr-2 text-3xl" /> Saved
+          </button>
+          <button>
+            <MdSkipPrevious className="mr-2 text-3xl" /> Passed
+          </button>
+          {userData.role === "organizer" && (
+            <Link>
+              <IoMdAddCircle className="mr-2 text-3xl" /> Add event
+            </Link>
+          )}
+          {userData.role === "admin" && (
+            <Link>
+              <MdAdminPanelSettings className="mr-2 text-3xl" /> Admin page
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   );
 }
