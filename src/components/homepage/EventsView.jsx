@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { getEventsData } from "../../store/eventsSlice";
 
-export default function EventsView() {
+export default function EventsView({ color }) {
   const dispatch = useDispatch();
-  const color = useSelector((state) => state.themeColor.color);
   const eventsData = useSelector((state) => state.events.eventsData);
-  //const [eventsData, setEventsData] = useState([]);
+  const userData = useSelector((state) => state.user.userData);
+  const userHasLoggedIn = useSelector((state) => state.user.hasLoggedIn);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,7 +37,13 @@ export default function EventsView() {
         <div>Loading.....</div>
       ) : (
         eventsData.map((event) => (
-          <EventHomepage key={event.id} event={event} />
+          <EventHomepage
+            key={event.id}
+            event={event}
+            userData={userData}
+            userHasLoggedIn={userHasLoggedIn}
+            color={color}
+          />
         ))
       )}
     </div>

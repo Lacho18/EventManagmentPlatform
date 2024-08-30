@@ -75,7 +75,12 @@ export default function NavigationHome() {
             <IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats
           </Link>
           <button>
-            <LiaSaveSolid className="mr-2 text-3xl" /> Saved
+            <LiaSaveSolid className="mr-2 text-3xl" /> Saved{" "}
+            {userData.savedEvents.length > 0 && (
+              <div className="bg-orange-500 rounded-full text-sm w-5 h-5">
+                {userData.savedEvents.length}
+              </div>
+            )}
           </button>
           <button>
             <MdSkipPrevious className="mr-2 text-3xl" /> Passed

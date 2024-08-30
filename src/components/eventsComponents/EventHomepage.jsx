@@ -1,15 +1,25 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./EventHomepage.css";
 import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import useDateFormat from "../../hooks/useDateFormat";
 import { useEffect, useState } from "react";
+import { MdAddBox, MdBookmarkRemove } from "react-icons/md";
+import { setError, nullError } from "../../store/errorSlice";
+import { changeHandler } from "../../store/userSlice";
+import useFetch from "../../hooks/useFetch";
 
-export default function EventHomepage({ event }) {
+export default function EventHomepage({
+  event,
+  userHasLoggedIn,
+  userData,
+  color,
+}) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = event.location;
 
-  const color = useSelector((state) => state.themeColor.color);
+  const error = useSelector((state) => state.error.errorMessage);
 
   useEffect(() => {
     setHover({
@@ -26,8 +36,33 @@ export default function EventHomepage({ event }) {
   const dateOfTheEvent = new Date(event.event_date);
   const dateForm = useDateFormat(dateOfTheEvent);
 
+  async function saveEventHandler(eventId, method, e) {
+    e.stopPropagation();
+
+    if (userData.id) {
+      const response = await useFetch("saveEvent", method, {
+        userId: userData.id,
+        eventId,
+      });
+
+      if (response.status === 200) {
+        dispatch(
+          changeHandler({
+            operation: "userData",
+            fieldName: "savedEvents",
+            value: response.data.data.savedEvents,
+          })
+        );
+      }
+    } else {
+      dispatch(setError("You should log in in order to save event!"));
+      setTimeout(() => dispatch(nullError()), 3000);
+    }
+  }
+
   return (
     <div
+      id={event.id}
       className="flex main-div-event-home"
       style={hover}
       onClick={() => navigate("/event/" + event.id)}
@@ -80,9 +115,25 @@ export default function EventHomepage({ event }) {
         </div>
       </div>
       <div
-        className="flex flex-col basis-3/12 justify-between border-l-4 m-0"
+        className="flex flex-col basis-3/12 justify-between border-l-4 m-0 relative"
         style={{ borderColor: color.hardColor }}
       >
+        {userHasLoggedIn && (
+          <button
+            className="absolute left-full text-3xl"
+            style={{ transform: "translate(-100%)" }}
+          >
+            {userData.savedEvents.includes(event.id) ? (
+              <MdBookmarkRemove
+                onClick={(e) => saveEventHandler(event.id, "DELETE", e)}
+              />
+            ) : (
+              <MdAddBox onClick={(e) => saveEventHandler(event.id, "GET", e)} />
+            )}
+            {error !== "" && <p>{error}</p>}
+          </button>
+        )}
+
         <p className="italic text-sm basis-1/12">Places left:</p>
         <p
           className="basis-8/12 self-center font-bold"

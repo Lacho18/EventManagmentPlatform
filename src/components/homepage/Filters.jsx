@@ -5,12 +5,8 @@ import useFetch from "../../hooks/useFetch";
 import "./Filters.css";
 import { getEventsData } from "../../store/eventsSlice";
 
-export default function Filters() {
-  /*
-    3. Dobavi button za zapazvane na event
-  */
+export default function Filters({ color }) {
   const dispatch = useDispatch();
-  let color = useSelector((state) => state.themeColor.color);
   const [minMax, setMinMax] = useState({
     lowestPrice: 0,
     highestPrice: 100,
@@ -24,7 +20,6 @@ export default function Filters() {
 
       if (result.status === 200) {
         setMinMax(result.data.data);
-        console.log(minMax);
       }
     }
 

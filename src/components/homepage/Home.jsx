@@ -5,7 +5,7 @@ import NavigationHome from "./NavigationHome";
 
 export default function Home() {
   const color = useSelector((state) => state.themeColor.color);
-  console.log(color);
+
   return (
     <div
       className="w-screen h-scree overflow-hidden"
@@ -15,8 +15,8 @@ export default function Home() {
     >
       <NavigationHome />
       <div className="flex w-full mt-20">
-        <Filters />
-        <EventsView />
+        <Filters color={color} />
+        <EventsView color={color} />
       </div>
     </div>
   );

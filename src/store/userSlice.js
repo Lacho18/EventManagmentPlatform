@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const userSlice = createSlice({
     name: 'user',
     initialState: {
+        hasLoggedIn: false,
         userData: {},
         loginUser: {
             email: "",
@@ -20,11 +21,12 @@ const userSlice = createSlice({
     },
     reducers: {
         logIn: (state, action) => {
-            console.log(action.payload);
             state.userData = action.payload;
+            state.hasLoggedIn = true;
         },
         logOut: (state) => {
             state.userData = {};
+            state.hasLoggedIn = false;
         },
         //Function that handles all changes in the input fields from log in and sign up, and sets the inserted data to the states
         changeHandler: (state, action) => {
