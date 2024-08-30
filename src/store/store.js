@@ -4,6 +4,7 @@ import userReducer from './userSlice';
 import errorReducer from './errorSlice';
 import themeColorReducer from './themeColorSlice';
 import loadingReducer from './loadingSlice';
+import eventsReducer from './eventsSlice';
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         error: errorReducer,
         themeColor: themeColorReducer,
         loading: loadingReducer,
+        events: eventsReducer,
     },
 });
 

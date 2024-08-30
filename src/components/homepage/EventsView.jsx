@@ -1,11 +1,14 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EventHomepage from "../eventsComponents/EventHomepage";
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
+import { getEventsData } from "../../store/eventsSlice";
 
 export default function EventsView() {
+  const dispatch = useDispatch();
   const color = useSelector((state) => state.themeColor.color);
-  const [eventsData, setEventsData] = useState([]);
+  const eventsData = useSelector((state) => state.events.eventsData);
+  //const [eventsData, setEventsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,7 +16,8 @@ export default function EventsView() {
       const response = await useFetch("events", "GET");
 
       if (response.status === 200) {
-        setEventsData(response.data.events);
+        //setEventsData(response.data.events);
+        dispatch(getEventsData({ data: response.data.events }));
         setLoading(false);
       }
     }

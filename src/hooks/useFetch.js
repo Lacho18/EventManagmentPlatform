@@ -17,6 +17,7 @@ const useFetch = async (route, method, data) => {
                 }
             }
             else {
+                console.log("SIRENEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 response = await axios.get(url + route);
             }
             break;
