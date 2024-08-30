@@ -71,9 +71,9 @@ export default function NavigationHome() {
         </p>
       ) : (
         <div className="basis-3/5 h-full buttons-nav">
-          <button>
+          <Link to="/chat">
             <IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats
-          </button>
+          </Link>
           <button>
             <LiaSaveSolid className="mr-2 text-3xl" /> Saved
           </button>
@@ -81,12 +81,12 @@ export default function NavigationHome() {
             <MdSkipPrevious className="mr-2 text-3xl" /> Passed
           </button>
           {userData.role === "organizer" && (
-            <Link>
+            <Link to="/newEvent">
               <IoMdAddCircle className="mr-2 text-3xl" /> Add event
             </Link>
           )}
           {userData.role === "admin" && (
-            <Link>
+            <Link to="/admin">
               <MdAdminPanelSettings className="mr-2 text-3xl" /> Admin page
             </Link>
           )}

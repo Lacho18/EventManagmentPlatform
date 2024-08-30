@@ -7,8 +7,6 @@ import { getEventsData } from "../../store/eventsSlice";
 
 export default function Filters() {
   /*
-    1. Napravi funcianolnostta na filter butonite
-    2. Napravi stranicite za funkcionalnostite v Navigation
     3. Dobavi button za zapazvane na event
   */
   const dispatch = useDispatch();
