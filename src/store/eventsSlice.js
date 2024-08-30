@@ -13,4 +13,4 @@ const eventsSlice = createSlice({
 });
 
 export const { getEventsData } = eventsSlice.actions;
-export default eventsSlice.reducer;
+export default eventsSlice.reducer; 

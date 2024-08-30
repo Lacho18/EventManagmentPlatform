@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { show } from "../../store/clickSlice";
 
 import OptionsWindow from "./NavigationHomeComp/OptionsWindow";
+import useFetch from "../../hooks/useFetch";
+import { getEventsData } from "../../store/eventsSlice";
 
 export default function NavigationHome() {
   const dispatch = useDispatch();
@@ -25,6 +27,24 @@ export default function NavigationHome() {
 
   //Variable that has the data for the theme colors on the side
   const themeColorsData = useSelector((state) => state.themeColor);
+
+  async function saveButtonHandler() {
+    const result = await useFetch("events", "GET", {
+      conditions: {},
+      query: `WHERE id = ANY(ARRAY[${userData.savedEvents.join(", ")}])`,
+    });
+
+    if (result.status === 200) {
+      //In case there is only 1 saved item
+      if (result.data.eventData) {
+        let array = [];
+        array.push(result.data.eventData);
+        dispatch(getEventsData({ data: array }));
+      } else {
+        dispatch(getEventsData({ data: result.data.events }));
+      }
+    }
+  }
 
   return (
     <div
@@ -74,7 +94,7 @@ export default function NavigationHome() {
           <Link to="/chat">
             <IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats
           </Link>
-          <button>
+          <button onClick={saveButtonHandler}>
             <LiaSaveSolid className="mr-2 text-3xl" /> Saved{" "}
             {userData.savedEvents.length > 0 && (
               <div className="bg-orange-500 rounded-full text-sm w-5 h-5">
