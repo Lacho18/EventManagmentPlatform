@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import useFetch from "../../hooks/useFetch";
 
 import "./Filters.css";
 import { getEventsData } from "../../store/eventsSlice";
 
-export default function Filters({ color }) {
-  const dispatch = useDispatch();
+export default function Filters({ color, dispatch, useFetch }) {
   const [minMax, setMinMax] = useState({
     lowestPrice: 0,
     highestPrice: 100,

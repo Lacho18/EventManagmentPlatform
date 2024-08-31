@@ -4,6 +4,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         hasLoggedIn: false,
+        onSavedItems: false,
         userData: {},
         loginUser: {
             email: "",
@@ -34,9 +35,15 @@ const userSlice = createSlice({
         },
         nullData: (state, action) => {
             state[action.payload.operation] = {};
-        }
+        },
+        onSavedButtonClicked: (state) => {
+            state.onSavedItems = true;
+        },
+        removeSaved: (state) => {
+            state.onSavedItems = false;
+        },
     },
 });
 
-export const { logIn, logOut, changeHandler, nullData } = userSlice.actions;
+export const { logIn, logOut, changeHandler, nullData, onSavedButtonClicked, removeSaved } = userSlice.actions;
 export default userSlice.reducer;

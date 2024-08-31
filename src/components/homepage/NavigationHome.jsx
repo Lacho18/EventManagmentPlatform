@@ -8,39 +8,63 @@ import { MdAdminPanelSettings } from "react-icons/md";
 
 import "./NavigationHome.css";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { show } from "../../store/clickSlice";
 
 import OptionsWindow from "./NavigationHomeComp/OptionsWindow";
-import useFetch from "../../hooks/useFetch";
 import { getEventsData } from "../../store/eventsSlice";
+import { onSavedButtonClicked, removeSaved } from "../../store/userSlice";
 
-export default function NavigationHome() {
-  const dispatch = useDispatch();
+/*
+  3. Opravi na EventHomePage organized by da pokazva istinskoto ime na organizatora
+  4. Zapochni logikata za straniciraneto na eventite
+*/
 
+export default function NavigationHome({
+  userData,
+  hasLoggedIn,
+  onSavedItems,
+  dispatch,
+  useFetch,
+}) {
   //Gets the value of the window, whether it is shown or not
   const shownData = useSelector((state) => state.click.shown);
-
-  //Gets the data of a user if he has logged in and empty object {} if he is not
-  const userData = useSelector((state) => state.user.userData);
 
   //Variable that has the data for the theme colors on the side
   const themeColorsData = useSelector((state) => state.themeColor);
 
+  //Function that handles the click of the saved items button
+  //This visualize in 'EventView' only the saved events from the user'
   async function saveButtonHandler() {
-    const result = await useFetch("events", "GET", {
-      conditions: {},
-      query: `WHERE id = ANY(ARRAY[${userData.savedEvents.join(", ")}])`,
-    });
+    //Checks if there is a user that has logged in
+    if (hasLoggedIn) {
+      //Checks if the view is not already on saved items
+      if (!onSavedItems) {
+        //Makes the WHERE query and send it to the server
+        const joinedElements = userData.savedEvents.join(", ");
+        const result = await useFetch("events", "GET", {
+          conditions: {},
+          query: `WHERE id = ANY(ARRAY[${joinedElements}])`,
+        });
 
-    if (result.status === 200) {
-      //In case there is only 1 saved item
-      if (result.data.eventData) {
-        let array = [];
-        array.push(result.data.eventData);
-        dispatch(getEventsData({ data: array }));
+        if (result.status === 200) {
+          //Sets the onSavedItems variable to true
+          dispatch(onSavedButtonClicked());
+          //In case there is only 1 saved item
+          if (result.data.eventData) {
+            let array = [];
+            array.push(result.data.eventData);
+            dispatch(getEventsData({ data: array }));
+            //in case of more than 1 saved elements
+          } else {
+            dispatch(getEventsData({ data: result.data.events }));
+          }
+        }
       } else {
+        //Removes the saved items and brings all events again
+        const result = await useFetch("events", "GET");
+        dispatch(removeSaved());
         dispatch(getEventsData({ data: result.data.events }));
       }
     }
@@ -75,7 +99,7 @@ export default function NavigationHome() {
           }}
         />
         <p>
-          {userData.firstName ? (
+          {hasLoggedIn ? (
             `${userData.firstName} ${userData.lastName}`
           ) : (
             <Link className="underline" to="/logIn">
@@ -85,7 +109,7 @@ export default function NavigationHome() {
         </p>
       </div>
 
-      {Object.keys(userData).length === 0 ? (
+      {!hasLoggedIn ? (
         <p className="basis-3/5 h-full flex justify-center items-center underline italic">
           Log in to use the application features
         </p>

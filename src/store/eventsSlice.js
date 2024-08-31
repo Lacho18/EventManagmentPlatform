@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const eventsSlice = createSlice({
     name: 'events',
     initialState: {
-        eventsData: []
+        eventsData: [],
+        maxEventsNumber: 0,
+        currentPage: 1
     },
     reducers: {
         getEventsData: (state, actions) => {

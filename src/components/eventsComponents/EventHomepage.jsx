@@ -7,13 +7,13 @@ import { useEffect, useState } from "react";
 import { MdAddBox, MdBookmarkRemove } from "react-icons/md";
 import { setError, nullError } from "../../store/errorSlice";
 import { changeHandler } from "../../store/userSlice";
-import useFetch from "../../hooks/useFetch";
 
 export default function EventHomepage({
   event,
   userHasLoggedIn,
   userData,
   color,
+  useFetch,
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
