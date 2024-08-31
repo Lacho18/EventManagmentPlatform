@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 
 import "./Filters.css";
-import { getEventsData } from "../../store/eventsSlice";
+import {
+  getEventsData,
+  setMaxEvents,
+  setOrderType,
+} from "../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 export default function Filters({ color, dispatch, useFetch }) {
   const [minMax, setMinMax] = useState({
     lowestPrice: 0,
     highestPrice: 100,
   });
+  const eventsSliceStates = useSelector((state) => state.events);
 
   useEffect(() => {
     async function getMinAndMaxPrices() {
@@ -16,7 +22,12 @@ export default function Filters({ color, dispatch, useFetch }) {
       });
 
       if (result.status === 200) {
-        setMinMax(result.data.data);
+        let resultSet = {
+          lowestPrice: result.data.data.lowestPrice,
+          highestPrice: result.data.data.highestPrice,
+        };
+        setMinMax(resultSet);
+        dispatch(setMaxEvents({ totalEvents: result.data.data.totalEvents }));
       }
     }
 
@@ -25,18 +36,29 @@ export default function Filters({ color, dispatch, useFetch }) {
 
   //Function that sends a specific SQL text as string
   //On the server if conditions is empty object there isn't WHERE clause, so it can be send as string from the frontend
-  async function clickHandler(query = "") {
+  async function clickHandler(query = "", orderType) {
+    dispatch(setOrderType({ orderType }));
+    const pageQuery = `${query} OFFSET ${
+      (eventsSliceStates.currentPage - 1) * eventsSliceStates.elementsOnPage
+    } LIMIT ${eventsSliceStates.elementsOnPage}`;
     const response = await useFetch(
       "events",
       "GET",
-      query !== "" && {
+      pageQuery !== "" && {
         conditions: {},
-        query,
+        query: pageQuery,
       }
     );
 
     if (response.status === 200) {
-      dispatch(getEventsData({ data: response.data.events }));
+      console.log(response.data.events);
+      if (!Array.isArray(response.data.events)) {
+        let array = [];
+        array.push(response.data.events);
+        dispatch(getEventsData({ data: array }));
+      } else {
+        dispatch(getEventsData({ data: response.data.events }));
+      }
     }
   }
 
@@ -74,17 +96,17 @@ export default function Filters({ color, dispatch, useFetch }) {
             onChange={priceFilterHandler}
           />
         </div>
-        <button onClick={() => clickHandler()}>By date</button>
+        <button onClick={() => clickHandler("", "event_date")}>By date</button>
         <button
           onClick={() => {
-            clickHandler("ORDER BY price DESC");
+            clickHandler("ORDER BY price DESC", "price");
           }}
         >
           Most expensive
         </button>
         <button
           onClick={() => {
-            clickHandler("ORDER BY price ASC");
+            clickHandler("ORDER BY price ASC", "price");
           }}
         >
           Least expensive

@@ -16,11 +16,6 @@ import OptionsWindow from "./NavigationHomeComp/OptionsWindow";
 import { getEventsData } from "../../store/eventsSlice";
 import { onSavedButtonClicked, removeSaved } from "../../store/userSlice";
 
-/*
-  3. Opravi na EventHomePage organized by da pokazva istinskoto ime na organizatora
-  4. Zapochni logikata za straniciraneto na eventite
-*/
-
 export default function NavigationHome({
   userData,
   hasLoggedIn,
@@ -51,15 +46,7 @@ export default function NavigationHome({
         if (result.status === 200) {
           //Sets the onSavedItems variable to true
           dispatch(onSavedButtonClicked());
-          //In case there is only 1 saved item
-          if (result.data.eventData) {
-            let array = [];
-            array.push(result.data.eventData);
-            dispatch(getEventsData({ data: array }));
-            //in case of more than 1 saved elements
-          } else {
-            dispatch(getEventsData({ data: result.data.events }));
-          }
+          dispatch(getEventsData({ data: result.data.events }));
         }
       } else {
         //Removes the saved items and brings all events again

@@ -16,6 +16,8 @@ export default function EventPage() {
 
   const [currentImage, setCurrentImage] = useState(1);
 
+  //eventData
+
   //gets the data for the selected event event
   useEffect(() => {
     async function getEventData() {
@@ -24,11 +26,8 @@ export default function EventPage() {
         conditions: { id: id },
         join: { joiningWith: "users", fieldsToGet: ["firstName", "lastName"] },
       });
-      setEventData(response.data.eventData);
+      setEventData(response.data.events);
       dispatch(setLoading({ boolValue: false }));
-      console.log(eventData);
-      console.log(response.data.eventData);
-      console.log(eventData.image[0]);
     }
 
     getEventData();

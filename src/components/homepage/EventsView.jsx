@@ -1,6 +1,6 @@
 import EventHomepage from "../eventsComponents/EventHomepage";
 import { useEffect, useState } from "react";
-import { getEventsData } from "../../store/eventsSlice";
+import { changePage, getEventsData } from "../../store/eventsSlice";
 import { removeSaved } from "../../store/userSlice";
 import { useSelector } from "react-redux";
 
@@ -12,13 +12,23 @@ export default function EventsView({
   dispatch,
   useFetch,
 }) {
-  //const dispatch = useDispatch();
-  const eventsData = useSelector((state) => state.events.eventsData);
+  const eventsSliceStates = useSelector((state) => state.events);
   const [loading, setLoading] = useState(true);
+
+  //Variable that calculates the maximum number of pages, by dividing the number of events in the database on the fixed number of elements on a page
+  const maxPages = Math.ceil(
+    eventsSliceStates.maxEventsNumber / eventsSliceStates.elementsOnPage
+  );
 
   useEffect(() => {
     async function fetchEventData() {
-      const response = await useFetch("events", "GET");
+      const reqBody = {
+        paging: true,
+        currentPage: eventsSliceStates.currentPage,
+        elementsLimit: eventsSliceStates.elementsOnPage,
+        orderBy: eventsSliceStates.orderType,
+      };
+      const response = await useFetch("events", "GET", reqBody);
 
       if (response.status === 200) {
         dispatch(getEventsData({ data: response.data.events }));
@@ -27,11 +37,15 @@ export default function EventsView({
     }
 
     fetchEventData();
-  }, []);
+  }, [eventsSliceStates.currentPage]);
+
+  function selectPageHandler(page) {
+    dispatch(changePage({ selectedPage: page }));
+  }
 
   return (
     <div
-      className="bg-gray-400  overflow-scroll h-full w-10/12 absolute right-full"
+      className="overflow-scroll h-full w-10/12 absolute right-full"
       style={{
         backgroundColor: color.hardColor,
         transform: "translateX(120%)",
@@ -67,16 +81,32 @@ export default function EventsView({
       {loading ? (
         <div>Loading.....</div>
       ) : (
-        eventsData.map((event) => (
-          <EventHomepage
-            key={event.id}
-            event={event}
-            userData={userData}
-            userHasLoggedIn={userHasLoggedIn}
-            color={color}
-            useFetch={useFetch}
-          />
-        ))
+        <div>
+          {eventsSliceStates.eventsData.map((event) => (
+            <EventHomepage
+              key={event.id}
+              event={event}
+              userData={userData}
+              userHasLoggedIn={userHasLoggedIn}
+              color={color}
+              useFetch={useFetch}
+            />
+          ))}
+          <div className="flex self-end w-auto">
+            {Array.from({ length: maxPages }).map((_, index) => {
+              return (
+                <button
+                  className="p-2 m-3 border-2 bg-white rounded"
+                  onClick={() => {
+                    selectPageHandler(index + 1);
+                  }}
+                >
+                  {index + 1}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );
