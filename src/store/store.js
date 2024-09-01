@@ -11,7 +11,7 @@ const store = configureStore({
         click: clickReducer,
         user: userReducer,
         error: errorReducer,
-        themeColor: themeColorReducer,
+        themeColor: themeColorReducer,     
         loading: loadingReducer,
         events: eventsReducer,
     },
