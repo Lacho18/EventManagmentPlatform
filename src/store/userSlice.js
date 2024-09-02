@@ -6,7 +6,7 @@ const userSlice = createSlice({
         hasLoggedIn: false,
         onSavedItems: false,
         userData: {},
-        loginUser: {
+        loginUser: {     
             email: "",
             password: ""
         },
