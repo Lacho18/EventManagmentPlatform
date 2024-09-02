@@ -35,7 +35,12 @@ export default function Home() {
         useFetch={useFetch}
       />
       <div className="flex w-full mt-20">
-        <Filters color={color} dispatch={dispatch} useFetch={useFetch} />
+        <Filters
+          color={color}
+          dispatch={dispatch}
+          useFetch={useFetch}
+          onSavedItems={onSavedItems}
+        />
         <EventsView
           color={color}
           userData={userData}

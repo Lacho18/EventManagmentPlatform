@@ -1,19 +1,13 @@
 import { useEffect, useState } from "react";
 
 import "./Filters.css";
-import {
-  getEventsData,
-  setMaxEvents,
-  setOrderType,
-} from "../../store/eventsSlice";
-import { useSelector } from "react-redux";
+import { setMaxEvents, setOrderType } from "../../store/eventsSlice";
 
-export default function Filters({ color, dispatch, useFetch }) {
+export default function Filters({ color, dispatch, useFetch, onSavedItems }) {
   const [minMax, setMinMax] = useState({
     lowestPrice: 0,
     highestPrice: 100,
   });
-  const eventsSliceStates = useSelector((state) => state.events);
 
   useEffect(() => {
     async function getMinAndMaxPrices() {
@@ -33,34 +27,6 @@ export default function Filters({ color, dispatch, useFetch }) {
 
     getMinAndMaxPrices();
   }, []);
-
-  //Function that sends a specific SQL text as string
-  //On the server if conditions is empty object there isn't WHERE clause, so it can be send as string from the frontend
-  async function clickHandler(query = "", orderType) {
-    dispatch(setOrderType({ orderType }));
-    const pageQuery = `${query} OFFSET ${
-      (eventsSliceStates.currentPage - 1) * eventsSliceStates.elementsOnPage
-    } LIMIT ${eventsSliceStates.elementsOnPage}`;
-    const response = await useFetch(
-      "events",
-      "GET",
-      pageQuery !== "" && {
-        conditions: {},
-        query: pageQuery,
-      }
-    );
-
-    if (response.status === 200) {
-      console.log(response.data.events);
-      if (!Array.isArray(response.data.events)) {
-        let array = [];
-        array.push(response.data.events);
-        dispatch(getEventsData({ data: array }));
-      } else {
-        dispatch(getEventsData({ data: response.data.events }));
-      }
-    }
-  }
 
   function priceFilterHandler(event) {
     clickHandler(`WHERE price >= ${event.target.value} ORDER BY price ASC`);
@@ -96,18 +62,25 @@ export default function Filters({ color, dispatch, useFetch }) {
             onChange={priceFilterHandler}
           />
         </div>
-        <button onClick={() => clickHandler("", "event_date")}>By date</button>
+        <button
+          onClick={() => dispatch(setOrderType({ orderType: "event_date" }))}
+          disabled={onSavedItems}
+        >
+          By date
+        </button>
         <button
           onClick={() => {
-            clickHandler("ORDER BY price DESC", "price");
+            dispatch(setOrderType({ orderType: "price DESC" }));
           }}
+          disabled={onSavedItems}
         >
           Most expensive
         </button>
         <button
           onClick={() => {
-            clickHandler("ORDER BY price ASC", "price");
+            dispatch(setOrderType({ orderType: "price" }));
           }}
+          disabled={onSavedItems}
         >
           Least expensive
         </button>

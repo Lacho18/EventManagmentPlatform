@@ -29,6 +29,8 @@ export default function NavigationHome({
   //Variable that has the data for the theme colors on the side
   const themeColorsData = useSelector((state) => state.themeColor);
 
+  const eventsSliceStates = useSelector((state) => state.events);
+
   //Function that handles the click of the saved items button
   //This visualize in 'EventView' only the saved events from the user'
   async function saveButtonHandler() {
@@ -36,23 +38,24 @@ export default function NavigationHome({
     if (hasLoggedIn) {
       //Checks if the view is not already on saved items
       if (!onSavedItems) {
-        //Makes the WHERE query and send it to the server
-        const joinedElements = userData.savedEvents.join(", ");
         const result = await useFetch("events", "GET", {
-          conditions: {},
-          query: `WHERE id = ANY(ARRAY[${joinedElements}])`,
+          conditions: { id: userData.savedEvents },
         });
 
         if (result.status === 200) {
           //Sets the onSavedItems variable to true
           dispatch(onSavedButtonClicked());
-          dispatch(getEventsData({ data: result.data.events }));
+          dispatch(getEventsData({ data: result.data.data }));
         }
       } else {
         //Removes the saved items and brings all events again
-        const result = await useFetch("events", "GET");
+        const result = await useFetch("events", "GET", {
+          currentPage: eventsSliceStates.currentPage,
+          limit: eventsSliceStates.elementsOnPage,
+          orderBy: eventsSliceStates.orderType,
+        });
         dispatch(removeSaved());
-        dispatch(getEventsData({ data: result.data.events }));
+        dispatch(getEventsData({ data: result.data.data }));
       }
     }
   }

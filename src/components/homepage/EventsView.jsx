@@ -25,19 +25,19 @@ export default function EventsView({
       const reqBody = {
         paging: true,
         currentPage: eventsSliceStates.currentPage,
-        elementsLimit: eventsSliceStates.elementsOnPage,
+        limit: eventsSliceStates.elementsOnPage,
         orderBy: eventsSliceStates.orderType,
       };
       const response = await useFetch("events", "GET", reqBody);
 
       if (response.status === 200) {
-        dispatch(getEventsData({ data: response.data.events }));
+        dispatch(getEventsData({ data: response.data.data }));
         setLoading(false);
       }
     }
 
     fetchEventData();
-  }, [eventsSliceStates.currentPage]);
+  }, [eventsSliceStates.currentPage, eventsSliceStates.orderType]);
 
   function selectPageHandler(page) {
     dispatch(changePage({ selectedPage: page }));
@@ -66,9 +66,13 @@ export default function EventsView({
               <button
                 className="w-10 h-10 p-2 bg-red-500 rounded m-4"
                 onClick={async () => {
-                  const result = await useFetch("events", "GET");
+                  const result = await useFetch("events", "GET", {
+                    currentPage: eventsSliceStates.currentPage,
+                    limit: eventsSliceStates.elementsOnPage,
+                    orderBy: eventsSliceStates.orderType,
+                  });
                   dispatch(removeSaved());
-                  dispatch(getEventsData({ data: result.data.events }));
+                  dispatch(getEventsData({ data: result.data.data }));
                 }}
               >
                 X
@@ -92,20 +96,25 @@ export default function EventsView({
               useFetch={useFetch}
             />
           ))}
-          <div className="flex self-end w-auto">
-            {Array.from({ length: maxPages }).map((_, index) => {
-              return (
-                <button
-                  className="p-2 m-3 border-2 bg-white rounded"
-                  onClick={() => {
-                    selectPageHandler(index + 1);
-                  }}
-                >
-                  {index + 1}
-                </button>
-              );
-            })}
-          </div>
+
+          {/*Div that visualize the buttons for selection pages*/}
+          {!onSavedItems && (
+            <div className="flex self-end w-auto">
+              {Array.from({ length: maxPages }).map((_, index) => {
+                return (
+                  <button
+                    className="p-2 m-3 border-2 bg-white rounded"
+                    key={index}
+                    onClick={() => {
+                      selectPageHandler(index + 1);
+                    }}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </div>

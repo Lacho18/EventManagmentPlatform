@@ -5,7 +5,7 @@ const eventsSlice = createSlice({
     initialState: {
         eventsData: [],
         maxEventsNumber: 0,
-        currentPage: 3,
+        currentPage: 1,
         elementsOnPage: 3,
         orderType: "event_date"
     },

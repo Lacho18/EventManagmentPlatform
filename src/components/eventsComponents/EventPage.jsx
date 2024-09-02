@@ -26,7 +26,7 @@ export default function EventPage() {
         conditions: { id: id },
         join: { joiningWith: "users", fieldsToGet: ["firstName", "lastName"] },
       });
-      setEventData(response.data.events);
+      setEventData(response.data.data[0]);
       dispatch(setLoading({ boolValue: false }));
     }
 
