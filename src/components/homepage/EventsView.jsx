@@ -27,6 +27,7 @@ export default function EventsView({
         currentPage: eventsSliceStates.currentPage,
         limit: eventsSliceStates.elementsOnPage,
         orderBy: eventsSliceStates.orderType,
+        join: { joiningWith: "users", fieldsToGet: ["firstName", "lastName"] },
       };
       const response = await useFetch("events", "GET", reqBody);
 

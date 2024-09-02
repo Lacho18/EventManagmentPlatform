@@ -84,7 +84,7 @@ export default function EventHomepage({
       </div>
       <div className="basis-7/12 flex flex-col">
         <p className="text-gray-400 italic org-text text-sm basis-1/12 ml-5">
-          Organized by <span className="underline">Asen Asenov</span>
+          Organized by <span className="underline">{event.users_data}</span>
         </p>
         <div className="flex flex-col basis-8/12 p-0 justify-evenly items-start ml-4">
           <p style={{ fontSize: "1.75em" }}>On {dateForm}</p>
@@ -123,7 +123,7 @@ export default function EventHomepage({
             className="absolute left-full text-3xl"
             style={{ transform: "translate(-100%)" }}
           >
-            {userData.savedEvents.includes(event.id) ? (
+            {userData.savedEvents && userData.savedEvents.includes(event.id) ? (
               <MdBookmarkRemove
                 onClick={(e) => saveEventHandler(event.id, "DELETE", e)}
               />

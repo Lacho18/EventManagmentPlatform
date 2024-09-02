@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setError, nullError } from "../../store/errorSlice";
 import { useNavigate } from "react-router-dom";
 import { changeHandler, nullData } from "../../store/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function SignUp() {
   const dispatch = useDispatch();
   const errorMessage = useSelector((state) => state.error.errorMessage);
+  const [userImage, setUserImage] = useState(null);
   const navigate = useNavigate();
 
   const color = useSelector((state) => state.themeColor.color);
@@ -54,6 +55,18 @@ export default function SignUp() {
         setTimeout(() => dispatch(nullError()), 3000);
       }
     });
+
+    if (signUpDataUser.role) {
+      if (signUpDataUser.role === "organizer") {
+        if (!userImage) {
+          isCorrect = false;
+          dispatch(
+            setError("If your role is organizer, you should upload an image!")
+          );
+          setTimeout(() => dispatch(nullError()), 3000);
+        }
+      }
+    }
 
     if (isCorrect) {
       const response = await useFetch("user", "POST", signUpDataUser);

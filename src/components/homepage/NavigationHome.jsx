@@ -77,17 +77,33 @@ export default function NavigationHome({
         className="basis-2/5 h-full flex justify-center items-center border-x-2"
         style={{ borderColor: themeColorsData.color.hardColor }}
       >
-        <FaUserCircle
-          style={{ fontSize: "3em", marginRight: "12px" }}
-          onClick={(event) => {
-            //Checks if the window is shown in order to prevent activating the global event and show and hide immediately the user window
-            if (!shownData) {
-              event.stopPropagation();
-            }
-            //Calls the show function which manage the state inside clickSlice.js file
-            dispatch(show());
-          }}
-        />
+        {userData.userImage === null || !hasLoggedIn ? (
+          <FaUserCircle
+            style={{ fontSize: "3em", marginRight: "12px" }}
+            onClick={(event) => {
+              //Checks if the window is shown in order to prevent activating the global event and show and hide immediately the user window
+              if (!shownData) {
+                event.stopPropagation();
+              }
+              //Calls the show function which manage the state inside clickSlice.js file
+              dispatch(show());
+            }}
+          />
+        ) : (
+          <img
+            className="w-20 h-20 rounded-full mr-3"
+            src={"http://localhost:3000/" + userData.userImage}
+            alt="No image ;)"
+            onClick={(event) => {
+              //Checks if the window is shown in order to prevent activating the global event and show and hide immediately the user window
+              if (!shownData) {
+                event.stopPropagation();
+              }
+              //Calls the show function which manage the state inside clickSlice.js file
+              dispatch(show());
+            }}
+          />
+        )}
         <p>
           {hasLoggedIn ? (
             `${userData.firstName} ${userData.lastName}`
@@ -110,7 +126,7 @@ export default function NavigationHome({
           </Link>
           <button onClick={saveButtonHandler}>
             <LiaSaveSolid className="mr-2 text-3xl" /> Saved{" "}
-            {userData.savedEvents.length > 0 && (
+            {userData.savedEvents && userData.savedEvents.length > 0 && (
               <div className="bg-orange-500 rounded-full text-sm w-5 h-5">
                 {userData.savedEvents.length}
               </div>

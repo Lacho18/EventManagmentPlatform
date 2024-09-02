@@ -3,6 +3,7 @@ import EventsView from "./EventsView";
 import Filters from "./Filters";
 import NavigationHome from "./NavigationHome";
 import useFetch from "../../hooks/useFetch";
+import UploadImage from "../userpage/UploadImage";
 
 export default function Home() {
   //Function that calls update states functions
@@ -20,6 +21,8 @@ export default function Home() {
   //Checks if the user has selected the saved items
   const onSavedItems = useSelector((state) => state.user.onSavedItems);
 
+  console.log(userData);
+
   return (
     <div
       className="w-screen h-scree overflow-hidden"
@@ -27,6 +30,13 @@ export default function Home() {
         backgroundColor: color.lightColor,
       }}
     >
+      {userData ? (
+        userData.userImage === null && (
+          <UploadImage userData={userData} dispatch={dispatch} />
+        )
+      ) : (
+        <div></div>
+      )}
       <NavigationHome
         userData={userData}
         hasLoggedIn={hasLoggedIn}
