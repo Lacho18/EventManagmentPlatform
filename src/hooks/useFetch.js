@@ -34,6 +34,7 @@ const useFetch = async (route, method, data) => {
                 response = await axios.put(url + route, data);
             }
             catch (error) {
+                console.log(error.response);
                 return error.response;
             }
             break;

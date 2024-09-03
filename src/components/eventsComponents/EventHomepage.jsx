@@ -84,7 +84,10 @@ export default function EventHomepage({
       </div>
       <div className="basis-7/12 flex flex-col">
         <p className="text-gray-400 italic org-text text-sm basis-1/12 ml-5">
-          Organized by <span className="underline">{event.users_data}</span>
+          Organized by{" "}
+          <span className="underline">
+            {event.firstName} {event.lastName}
+          </span>
         </p>
         <div className="flex flex-col basis-8/12 p-0 justify-evenly items-start ml-4">
           <p style={{ fontSize: "1.75em" }}>On {dateForm}</p>

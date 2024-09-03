@@ -56,7 +56,7 @@ export default function SignUp() {
       }
     });
 
-    if (signUpDataUser.role) {
+    /*if (signUpDataUser.role) {
       if (signUpDataUser.role === "organizer") {
         if (!userImage) {
           isCorrect = false;
@@ -66,7 +66,7 @@ export default function SignUp() {
           setTimeout(() => dispatch(nullError()), 3000);
         }
       }
-    }
+    }*/
 
     if (isCorrect) {
       const response = await useFetch("user", "POST", signUpDataUser);

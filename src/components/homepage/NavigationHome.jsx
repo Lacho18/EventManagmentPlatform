@@ -77,7 +77,9 @@ export default function NavigationHome({
         className="basis-2/5 h-full flex justify-center items-center border-x-2"
         style={{ borderColor: themeColorsData.color.hardColor }}
       >
-        {userData.userImage === null || !hasLoggedIn ? (
+        {userData.userImage === null ||
+        userData.userImage === "empty" ||
+        !hasLoggedIn ? (
           <FaUserCircle
             style={{ fontSize: "3em", marginRight: "12px" }}
             onClick={(event) => {

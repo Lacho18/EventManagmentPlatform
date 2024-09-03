@@ -16,6 +16,8 @@ export default function EventPage() {
 
   const [currentImage, setCurrentImage] = useState(1);
 
+  console.log(eventData);
+
   //eventData
 
   //gets the data for the selected event event
@@ -24,7 +26,10 @@ export default function EventPage() {
       dispatch(setLoading({ boolValue: true }));
       const response = await useFetch("events", "GET", {
         conditions: { id: id },
-        join: { joiningWith: "users", fieldsToGet: ["firstName", "lastName"] },
+        join: {
+          joiningWith: "users",
+          fieldsToGet: ["firstName", "lastName", "userImage"],
+        },
       });
       setEventData(response.data.data[0]);
       dispatch(setLoading({ boolValue: false }));
@@ -102,7 +107,9 @@ export default function EventPage() {
         >
           <div className="basis-1/2 flex flex-col justify-center items-center">
             <p className="text-sm italic">organizer:</p>
-            <p className="text-2xl font-bold">{eventData.users_data}</p>
+            <p className="text-2xl font-bold">
+              {eventData.firstName} {eventData.lastName}
+            </p>
             <button className="underline text-lg">Open chat</button>
             <p className="underline text-lg">Nqkakuv email</p>
           </div>
@@ -110,7 +117,11 @@ export default function EventPage() {
             <img
               className="w-44 h-44"
               style={{ borderRadius: "50%" }}
-              src="https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
+              src={
+                eventData.userImage !== "empty" || eventData.userImage !== null
+                  ? "http://localhost:3000/" + eventData.userImage
+                  : "https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
+              }
             />
           </div>
         </div>
