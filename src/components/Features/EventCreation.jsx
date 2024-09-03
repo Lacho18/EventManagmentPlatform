@@ -2,18 +2,6 @@ import { changeSingleEventHandler } from "../../store/singleEventSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useFetch from "../../hooks/useFetch";
 
-/*
-  Vsichki poleta rabotqt
-  1. Napravi proverki za validnost na dannite na survura
-  2. Izobrazi suobshteniqta za greshka
-  3. Opravi lilaviq theme color
-  4. Napravi logikata za zakupuvaneto na bilet
-    4.1. ID na eventa da se dobavq v "willParticipate" masiva na potrebitelq
-    4.2. Da se dicrementira broq na mestata za eventa sled zakypka
-    4.3. Sumata ot kypeniq bilet da se dobavi kum "moneySpent" poleto na potrebitelq
-    4.4. Da se dobavi logika v koqto event ne moje da bude cuknat i izglejda po siv ili bezcveten ako veche nqma svobodni mesta
-*/
-
 export default function EventCreation() {
   const dispatch = useDispatch();
   const eventData = useSelector((state) => state.singleEvent.eventData);
