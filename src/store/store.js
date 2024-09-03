@@ -5,15 +5,17 @@ import errorReducer from './errorSlice';
 import themeColorReducer from './themeColorSlice';
 import loadingReducer from './loadingSlice';
 import eventsReducer from './eventsSlice';
+import singleEventReducer from './singleEventSlice';
 
 const store = configureStore({
     reducer: {
         click: clickReducer,
         user: userReducer,
         error: errorReducer,
-        themeColor: themeColorReducer,     
+        themeColor: themeColorReducer,
         loading: loadingReducer,
         events: eventsReducer,
+        singleEvent: singleEventReducer,
     },
 });
 

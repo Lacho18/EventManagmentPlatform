@@ -24,11 +24,6 @@ export default function UploadImage({ userData, dispatch }) {
   }
 
   async function closeWindowHandler() {
-    /*const result = await useFetch("http://localhost:3000/uploadImage", {
-      method: "PUT",
-      body: { isClosed: true, userId: userData.id }, // Convert the object to a JSON string
-    });*/
-
     const result = await useFetch("uploadImage", "PUT", {
       isClosed: true,
       userId: userData.id,
