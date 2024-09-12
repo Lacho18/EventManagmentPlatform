@@ -1,10 +1,6 @@
 import useFetch from "../../hooks/useFetch";
 import { logIn } from "../../store/userSlice";
 
-/*
-    5. Zapochni stranicata koqto shte suzdava subitie
-*/
-
 export default function UploadImage({ userData, dispatch }) {
   async function selectFileHandler(event) {
     const selectedFile = event.target.files[0];

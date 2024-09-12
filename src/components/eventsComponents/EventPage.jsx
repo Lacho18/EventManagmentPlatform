@@ -5,11 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../store/loadingSlice";
 import useDateFormat from "../../hooks/useDateFormat";
 import { FaLocationDot } from "react-icons/fa6";
+import BuyTicket from "./BuyTicket";
 
 export default function EventPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [eventData, setEventData] = useState({});
+  const [isBuying, setIsBuying] = useState(false);
+
+  const userData = useSelector((state) => state.user.userData);
   const color = useSelector((state) => state.themeColor.color);
   const loading = useSelector((state) => state.loading);
   const formattedDate = useDateFormat(eventData.event_date);
@@ -55,6 +59,10 @@ export default function EventPage() {
         return newValue;
       }
     });
+  }
+
+  function buyTicketHandler() {
+    setIsBuying(true);
   }
 
   if (loading.isLoading) {
@@ -210,6 +218,7 @@ export default function EventPage() {
               backgroundColor: color.lightColor,
               border: "2px solid " + color.heavyColor,
             }}
+            onClick={() => buyTicketHandler()}
           >
             Buy ticket
           </button>
@@ -217,6 +226,17 @@ export default function EventPage() {
             Price: <span className="font-bold">{eventData.price} BGN</span>
           </p>
         </div>
+
+        {isBuying && (
+          <BuyTicket
+            eventId={eventData.id}
+            userId={userData.id}
+            name={eventData.name}
+            placesLeft={eventData.places}
+            price={eventData.price}
+            answerNo={() => setIsBuying(false)}
+          />
+        )}
       </div>
     );
   }

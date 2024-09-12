@@ -11,7 +11,7 @@ const themeColorSlice = createSlice({
             hardColor: 'rgb(148,163,184)',
             heavyColor: 'rgb(71,85,105)',
         },
-        //options: ['gray', 'white', 'black', 'purple', 'green', 'pink'],
+
         options: [{
             color: 'gray',
             easyColor: 'rgb(248,250,252)',
@@ -35,10 +35,10 @@ const themeColorSlice = createSlice({
         },
         {
             color: 'purple',
-            easyColor: 'rgb(250,245,255)',
-            lightColor: 'rgb(243,232,255)',
-            hardColor: 'rgb(192,132,252)',
-            heavyColor: 'rgb(147,51,234)',
+            easyColor: 'rgb(193, 139, 224)',
+            lightColor: 'rgb(162, 95, 201)',
+            hardColor: 'rgb(60, 15, 87)',
+            heavyColor: 'rgb(36, 5, 54)',
         },
         {
             color: 'green',
