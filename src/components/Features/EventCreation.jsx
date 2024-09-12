@@ -7,6 +7,14 @@ import { Link, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { nullError, setError } from "../../store/errorSlice";
 
+/*
+  4. Napravi logikata za zakupuvaneto na bilet
+    4.1. ID na eventa da se dobavq v "willParticipate" masiva na potrebitelq
+    4.2. Da se dicrementira broq na mestata za eventa sled zakypka
+    4.3. Sumata ot kypeniq bilet da se dobavi kum "moneySpent" poleto na potrebitelq
+    4.4. Da se dobavi logika v koqto event ne moje da bude cuknat i izglejda po siv ili bezcveten ako veche nqma svobodni mesta
+*/
+
 export default function EventCreation() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

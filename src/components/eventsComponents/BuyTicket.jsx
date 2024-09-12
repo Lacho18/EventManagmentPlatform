@@ -9,19 +9,49 @@ export default function BuyTicket({
   placesLeft,
   answerNo,
 }) {
+  //Follows if Yes button is clicked
   const [answerYes, setAnswerYes] = useState(false);
+  //Follows the number of tickets the user inserts
   const [ticketNumbers, setTicketNumbers] = useState(2);
+  //Set to the message that server returns after the request
+  const [message, setMessage] = useState("");
 
-  console.log(userId);
-
-  function submitBoughtTicket(numberOfTickets) {
-    const result = useFetch("buyTicket", "POST", {
+  //Makes the request to the server on /buyTicket POST request, updating user and event in the way to show that ticket was purchase
+  async function submitBoughtTicket(numberOfTickets) {
+    //If the inserted amount is more than the places left
+    if (numberOfTickets > placesLeft) {
+      numberOfTickets = placesLeft;
+    }
+    const result = await useFetch("buyTicket", "POST", {
       eventId: eventId,
       userId: userId,
       ticketsAmount: numberOfTickets,
     });
+
+    setMessage(() => result.data.message);
   }
 
+  //Component after request
+  if (message !== "") {
+    return (
+      <div
+        className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center items-center p-10"
+        style={{ transform: "translate(-50%, -50%)" }}
+      >
+        <div className="flex flex-col justify-center items-center">
+          <p className="text-2xl font-bold text-red-500">{message}</p>
+          <button
+            className="p-3 bg-red-600 rounded-xl"
+            onClick={() => answerNo()}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  //Component if "Yes button is clicked"
   if (answerYes) {
     return (
       <div
@@ -82,13 +112,15 @@ export default function BuyTicket({
       </div>
     );
   }
+
+  //Component asking the user if he is sure about the purchase
   return (
     <div
       className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center p-10"
       style={{ transform: "translate(-50%, -50%)" }}
     >
       <div className="flex flex-col justify-center items-center m-5">
-        <p>Are you sure you want to purchase ticket for event?</p>
+        <p>Are you sure you want to purchase ticket for event</p>
         <p className="font-bold text-lg">{name}</p>
         <p>
           price: <span className="font-bold">{price}</span> BGN

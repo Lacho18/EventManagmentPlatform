@@ -212,16 +212,18 @@ export default function EventPage() {
           </div>
         </div>
         <div className="flex justify-between mt-10 pb-3 pt-2 rounded-3xl border-t-2">
-          <button
-            className="ml-10 p-3 rounded text-center"
-            style={{
-              backgroundColor: color.lightColor,
-              border: "2px solid " + color.heavyColor,
-            }}
-            onClick={() => buyTicketHandler()}
-          >
-            Buy ticket
-          </button>
+          {userData.id && (
+            <button
+              className="ml-10 p-3 rounded text-center"
+              style={{
+                backgroundColor: color.lightColor,
+                border: "2px solid " + color.heavyColor,
+              }}
+              onClick={() => buyTicketHandler()}
+            >
+              Buy ticket
+            </button>
+          )}
           <p className="pr-10 text-3xl">
             Price: <span className="font-bold">{eventData.price} BGN</span>
           </p>
