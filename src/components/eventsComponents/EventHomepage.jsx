@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import useDateFormat from "../../hooks/useDateFormat";
 import { useEffect, useState } from "react";
 import { MdAddBox, MdBookmarkRemove } from "react-icons/md";
+import { TiDelete } from "react-icons/ti";
 import { setError, nullError } from "../../store/errorSlice";
 import { changeHandler } from "../../store/userSlice";
+import DeleteEvent from "./DeleteEvent";
 
 export default function EventHomepage({
   event,
@@ -25,6 +27,7 @@ export default function EventHomepage({
     setHover({
       border: `3px solid ${color.heavyColor}`,
       backgroundColor: color.lightColor,
+      opacity: event.places <= 0 ? "0.5" : "1",
     });
   }, [color]);
 
@@ -32,10 +35,12 @@ export default function EventHomepage({
     border: `3px solid ${color.heavyColor}`,
     backgroundColor: color.lightColor,
   });
+  const [deleteEvent, setDeleteEvent] = useState(false);
 
   const dateOfTheEvent = new Date(event.event_date);
   const dateForm = useDateFormat(dateOfTheEvent);
 
+  //Adds event to saved events
   async function saveEventHandler(eventId, method, e) {
     e.stopPropagation();
 
@@ -60,22 +65,33 @@ export default function EventHomepage({
     }
   }
 
+  function deleteEventHandler(id, e) {
+    e.stopPropagation();
+    setDeleteEvent(true);
+  }
+
   return (
     <div
       id={event.id}
       className="flex main-div-event-home"
       style={hover}
-      onClick={() => navigate("/event/" + event.id)}
+      onClick={() => {
+        if (event.places > 0) {
+          navigate("/event/" + event.id);
+        }
+      }}
       onMouseEnter={() =>
         setHover({
           border: `3px solid ${color.hardColor}`,
           backgroundColor: color.easyColor,
+          opacity: event.places <= 0 ? "0.5" : "1",
         })
       }
       onMouseLeave={() =>
         setHover({
           border: `3px solid ${color.heavyColor}`,
           backgroundColor: color.lightColor,
+          opacity: event.places <= 0 ? "0.5" : "1",
         })
       }
     >
@@ -122,19 +138,33 @@ export default function EventHomepage({
         style={{ borderColor: color.hardColor }}
       >
         {userHasLoggedIn && (
-          <button
-            className="absolute left-full text-3xl"
-            style={{ transform: "translate(-100%)" }}
-          >
-            {userData.savedEvents && userData.savedEvents.includes(event.id) ? (
-              <MdBookmarkRemove
-                onClick={(e) => saveEventHandler(event.id, "DELETE", e)}
-              />
-            ) : (
-              <MdAddBox onClick={(e) => saveEventHandler(event.id, "GET", e)} />
+          <div className="flex justify-end items-center">
+            {/*Button for deleting event, visible only from the organizer of the vent and the administrator*/}
+            {(userData.role === "admin" ||
+              userData.id === event.organizer_ID) && (
+              <button
+                className="text-3xl"
+                onClick={(e) => deleteEventHandler(event.id, e)}
+              >
+                <TiDelete />
+              </button>
             )}
-            {error !== "" && <p>{error}</p>}
-          </button>
+
+            {/*Button that adds the current event to the saved events of the user*/}
+            <button className=" text-3xl">
+              {userData.savedEvents &&
+              userData.savedEvents.includes(event.id) ? (
+                <MdBookmarkRemove
+                  onClick={(e) => saveEventHandler(event.id, "DELETE", e)}
+                />
+              ) : (
+                <MdAddBox
+                  onClick={(e) => saveEventHandler(event.id, "GET", e)}
+                />
+              )}
+              {error !== "" && <p>{error}</p>}
+            </button>
+          </div>
         )}
 
         <p className="italic text-sm basis-1/12">Places left:</p>
@@ -159,6 +189,17 @@ export default function EventHomepage({
           </p>
         </div>
       </div>
+
+      {deleteEvent && (
+        <DeleteEvent
+          userData={userData}
+          eventData={event}
+          closeWindow={() => {
+            setDeleteEvent(false);
+          }}
+          useFetch={useFetch}
+        />
+      )}
     </div>
   );
 }
