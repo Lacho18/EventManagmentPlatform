@@ -81,7 +81,10 @@ export default function EventCreation() {
       changeSingleEventHandler({ name: "organizer_ID", value: userData.id })
     );
 
-    const result = await useFetch("events", "POST", eventData);
+    const result = await useFetch("events", "POST", {
+      ...eventData,
+      organizer_ID: userData.id,
+    });
 
     if (result.status === 400) {
       dispatch(setError(result.data.message));

@@ -7,6 +7,7 @@ export default function BuyTicket({
   name,
   price,
   placesLeft,
+  themeColor,
   answerNo,
 }) {
   //Follows if Yes button is clicked
@@ -36,7 +37,10 @@ export default function BuyTicket({
     return (
       <div
         className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center items-center p-10"
-        style={{ transform: "translate(-50%, -50%)" }}
+        style={{
+          transform: "translate(-50%, -50%)",
+          backgroundColor: themeColor.lightColor,
+        }}
       >
         <div className="flex flex-col justify-center items-center">
           <p className="text-2xl font-bold text-red-500">{message}</p>
@@ -56,7 +60,10 @@ export default function BuyTicket({
     return (
       <div
         className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center p-10"
-        style={{ transform: "translate(-50%, -50%)" }}
+        style={{
+          transform: "translate(-50%, -50%)",
+          backgroundColor: themeColor.lightColor,
+        }}
       >
         <div className="flex flex-col justify-center items-center m-5">
           <label>Insert the number of tickets you wish to purchase</label>
@@ -117,7 +124,10 @@ export default function BuyTicket({
   return (
     <div
       className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center p-10"
-      style={{ transform: "translate(-50%, -50%)" }}
+      style={{
+        transform: "translate(-50%, -50%)",
+        backgroundColor: themeColor.lightColor,
+      }}
     >
       <div className="flex flex-col justify-center items-center m-5">
         <p>Are you sure you want to purchase ticket for event</p>

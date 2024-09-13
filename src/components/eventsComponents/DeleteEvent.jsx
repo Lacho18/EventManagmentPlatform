@@ -1,8 +1,12 @@
+import { useState } from "react";
+import { setLoading } from "../../store/loadingSlice";
+
 export default function DeleteEvent({
   userData,
   eventData,
   closeWindow,
   useFetch,
+  dispatch,
 }) {
   /*
         1. Napishi logicata za triene na event
@@ -12,10 +16,63 @@ export default function DeleteEvent({
         
         2. Izmisli metod za update na event
     */
+  const [responseMessage, setResponseMessage] = useState({
+    message: "",
+    status: 0,
+  });
 
+  //Function that deletes a given event
+  //setLoading is used to update the page dynamically after the event is deleted
   async function deletingEvent(e) {
     e.stopPropagation();
+    dispatch(setLoading({ boolValue: true }));
     const result = await useFetch("events", "DELETE", { eventData });
+
+    console.log(result);
+
+    setResponseMessage((oldData) => {
+      return {
+        ...oldData,
+        message: result.data.message,
+        status: result.status,
+      };
+    });
+
+    dispatch(setLoading({ boolValue: false }));
+  }
+
+  if (responseMessage.message !== "") {
+    return (
+      <div
+        className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center p-10"
+        style={{ transform: "translate(-75%, -50%)" }}
+      >
+        <div className="flex flex-col justify-center items-center m-5">
+          <p>{responseMessage.message}</p>
+        </div>
+        <div className="flex justify-evenly">
+          <div>
+            <button
+              className="p-3 bg-green-500 rounded-xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeWindow();
+              }}
+            >
+              Close
+            </button>
+            {responseMessage.status === 400 && (
+              <button
+                className="p-3 bg-red-600 rounded-xl"
+                onClick={(e) => deletingEvent(e)}
+              >
+                Try again
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

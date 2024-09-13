@@ -236,6 +236,7 @@ export default function EventPage() {
             name={eventData.name}
             placesLeft={eventData.places}
             price={eventData.price}
+            themeColor={color}
             answerNo={() => setIsBuying(false)}
           />
         )}

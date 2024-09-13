@@ -198,6 +198,7 @@ export default function EventHomepage({
             setDeleteEvent(false);
           }}
           useFetch={useFetch}
+          dispatch={dispatch}
         />
       )}
     </div>
