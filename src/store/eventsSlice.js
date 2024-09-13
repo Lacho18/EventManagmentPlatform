@@ -7,7 +7,8 @@ const eventsSlice = createSlice({
         maxEventsNumber: 0,
         currentPage: 1,
         elementsOnPage: 3,
-        orderType: "event_date"
+        orderType: "event_date",
+        eventsType: "upcomingEvents"
     },
     reducers: {
         getEventsData: (state, actions) => {
@@ -21,9 +22,14 @@ const eventsSlice = createSlice({
         },
         setOrderType: (state, action) => {
             state.orderType = action.payload.orderType;
+        },
+        setEventsType: (state, action) => {
+            if (action.payload.type !== state.eventsType) {
+                state.eventsType = action.payload.type;
+            }
         }
     },
 });
 
-export const { getEventsData, setMaxEvents, changePage, setOrderType } = eventsSlice.actions;
+export const { getEventsData, setMaxEvents, changePage, setOrderType, setEventsType } = eventsSlice.actions;
 export default eventsSlice.reducer; 
