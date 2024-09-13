@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 import "./Filters.css";
-import { setMaxEvents, setOrderType } from "../../store/eventsSlice";
+import {
+  setEventsType,
+  setMaxEvents,
+  setOrderType,
+} from "../../store/eventsSlice";
 
 export default function Filters({ color, dispatch, useFetch, onSavedItems }) {
   const [minMax, setMinMax] = useState({
@@ -32,6 +36,10 @@ export default function Filters({ color, dispatch, useFetch, onSavedItems }) {
     clickHandler(`WHERE price >= ${event.target.value} ORDER BY price ASC`);
   }
 
+  function changeEventsType(type) {
+    dispatch(setEventsType({ type: type }));
+  }
+
   return (
     <div
       className={`w-2/12 fixed flex flex-col border-x-4 filters-div`}
@@ -46,8 +54,12 @@ export default function Filters({ color, dispatch, useFetch, onSavedItems }) {
         className="flex flex-col items-center basis-2/5 justify-evenly text-lg border-b-4"
         style={{ borderColor: color.hardColor }}
       >
-        <button>Coming events</button>
-        <button>Passed events</button>
+        <button onClick={() => changeEventsType("upcomingEvents")}>
+          Coming events
+        </button>
+        <button onClick={() => changeEventsType("passedEvents")}>
+          Passed events
+        </button>
       </div>
       <div className="flex flex-col items-center basis-3/5 justify-evenly text-lg">
         <div>

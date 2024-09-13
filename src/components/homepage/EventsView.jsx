@@ -27,6 +27,7 @@ export default function EventsView({
         currentPage: eventsSliceStates.currentPage,
         limit: eventsSliceStates.elementsOnPage,
         orderBy: eventsSliceStates.orderType,
+        tableName: eventsSliceStates.eventsType,
         join: { joiningWith: "users", fieldsToGet: ["firstName", "lastName"] },
       };
       const response = await useFetch("events", "GET", reqBody);
@@ -38,7 +39,11 @@ export default function EventsView({
     }
 
     fetchEventData();
-  }, [eventsSliceStates.currentPage, eventsSliceStates.orderType]);
+  }, [
+    eventsSliceStates.currentPage,
+    eventsSliceStates.orderType,
+    eventsSliceStates.eventsType,
+  ]);
 
   function selectPageHandler(page) {
     dispatch(changePage({ selectedPage: page }));
