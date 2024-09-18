@@ -7,6 +7,17 @@ import useDateFormat from "../../hooks/useDateFormat";
 import { FaLocationDot } from "react-icons/fa6";
 import BuyTicket from "./BuyTicket";
 
+/*
+  Malko ostana
+  1. Dobavqne na stranica za update na event
+  2. Stranica na administratora (Da moje da trie potrebiteli)
+  3. Dobavqne na chat funcionalnostta
+
+  Za sledvashtiq put
+  1. Stranica za update na event
+  ?2. Stranica za administratora
+*/
+
 export default function EventPage() {
   const { id } = useParams();
   const dispatch = useDispatch();

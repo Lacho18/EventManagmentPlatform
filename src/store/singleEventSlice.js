@@ -52,9 +52,13 @@ const singleEventSlice = createSlice({
                 event_date: null,
                 places: 0
             }
+        },
+
+        setEventHandler: (state, action) => {
+            state.eventData = action.payload;
         }
     },
 });
 
-export const { changeSingleEventHandler, clearSingleEventState } = singleEventSlice.actions;
+export const { changeSingleEventHandler, clearSingleEventState, setEventHandler } = singleEventSlice.actions;
 export default singleEventSlice.reducer;

@@ -11,6 +11,7 @@ import UpdateUser from "./components/userpage/UpdateUser";
 import ChatAppPage from "./components/Features/ChatAppPage";
 import EventCreation from "./components/Features/EventCreation";
 import AdminPage from "./components/Features/AdminPage";
+import UpdateEvent from "./components/eventsComponents/UpdateEvent";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ function App() {
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/updateUser" element={<UpdateUser />} />
+        <Route path="/updateEvent/:id" element={<UpdateEvent />} />
         <Route path="/chat" element={<ChatAppPage />} />
         <Route path="/newEvent" element={<EventCreation />} />
         <Route path="/admin" element={<AdminPage />} />

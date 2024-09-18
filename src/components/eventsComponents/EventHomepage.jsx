@@ -4,7 +4,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import useDateFormat from "../../hooks/useDateFormat";
 import { useEffect, useState } from "react";
-import { MdAddBox, MdBookmarkRemove } from "react-icons/md";
+import { MdAddBox, MdBookmarkRemove, MdBrowserUpdated } from "react-icons/md";
 import { TiDelete } from "react-icons/ti";
 import { setError, nullError } from "../../store/errorSlice";
 import { changeHandler } from "../../store/userSlice";
@@ -147,6 +147,20 @@ export default function EventHomepage({
                 onClick={(e) => deleteEventHandler(event.id, e)}
               >
                 <TiDelete />
+              </button>
+            )}
+
+            {/*Button for updating event, visible only from the organizer of the event and the administrator*/}
+            {(userData.role === "admin" ||
+              userData.id === event.organizer_ID) && (
+              <button
+                className="text-3xl"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate("/UpdateEvent/" + event.id);
+                }}
+              >
+                <MdBrowserUpdated />
               </button>
             )}
 
