@@ -16,6 +16,8 @@ export default function UpdateEvent() {
   const color = useSelector((state) => state.themeColor.color);
   const error = useSelector((state) => state.error.errorMessage);
   const eventData = useSelector((state) => state.singleEvent.eventData);
+  const userHasLoggedIn = useSelector((state) => state.user.hasLoggedIn);
+  const userData = useSelector((state) => state.user.userData);
 
   //Setting the organizer_id to enumerable false in order to be ignored from the map function
   const eventDataClone = { ...eventData };
@@ -119,6 +121,39 @@ export default function UpdateEvent() {
       }, 3000);
     }
   }
+
+  //In case the user has not logged in
+  if (!userHasLoggedIn)
+    return (
+      <div
+        className="w-screen h-screen flex justify-center items-center font-bold text-3xl text-red-500"
+        style={{ backgroundColor: color.hardColor }}
+      >
+        You should log in in your organizer account to update this event
+      </div>
+    );
+
+  //If the user is participant
+  if (userData.role === "participant")
+    return (
+      <div
+        className="w-screen h-screen flex justify-center items-center font-bold text-3xl text-red-500"
+        style={{ backgroundColor: color.hardColor }}
+      >
+        Participants are not allowed to this page!
+      </div>
+    );
+
+  //In case the logged in user is not neither organizer of the event or admin
+  if (userData.role !== "admin" && userData.id !== eventData.organizer_ID)
+    return (
+      <div
+        className="w-screen h-screen flex justify-center items-center font-bold text-3xl text-red-500"
+        style={{ backgroundColor: color.hardColor }}
+      >
+        You does not have access to this page
+      </div>
+    );
 
   return (
     <div
