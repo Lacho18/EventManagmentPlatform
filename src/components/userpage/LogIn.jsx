@@ -67,6 +67,7 @@ export default function LogIn() {
       {errorMessage !== "" && (
         <p className="text-red-600 font-bold absolute">{errorMessage}</p>
       )}
+      <p className="text-3xl font-bold">1qaz?e1qOC</p>
       <form
         className="flex flex-col justify-center w-2/5 h-auto form-container"
         onSubmit={submitHandler}

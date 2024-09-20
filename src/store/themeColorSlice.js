@@ -61,14 +61,15 @@ const themeColorSlice = createSlice({
             state.sideWindow = !state.sideWindow;
         },
         changeColor: (state, action) => {
-            console.log("EHOOOO");
             let selectedColor = state.options.find(option => option.color === action.payload.selection);
-            console.log(selectedColor);
 
             state.color = selectedColor;
+        },
+        addNewColor: (state, action) => {
+            state.options = [...state.options, action.payload];
         }
     }
 });
 
-export const { toggleWindow, changeColor } = themeColorSlice.actions;
+export const { toggleWindow, changeColor, addNewColor } = themeColorSlice.actions;
 export default themeColorSlice.reducer;

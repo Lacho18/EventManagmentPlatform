@@ -12,6 +12,9 @@ import ChatAppPage from "./components/Features/ChatAppPage";
 import EventCreation from "./components/Features/EventCreation";
 import AdminPage from "./components/Features/AdminPage";
 import UpdateEvent from "./components/eventsComponents/UpdateEvent";
+import ThemeColor from "./components/AdminPage/ThemeColor";
+import AdminLayout from "./components/AdminPage/AdminLayout";
+import AllUsers from "./components/AdminPage/AllUsers";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,7 +43,14 @@ function App() {
         <Route path="/updateEvent/:id" element={<UpdateEvent />} />
         <Route path="/chat" element={<ChatAppPage />} />
         <Route path="/newEvent" element={<EventCreation />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<AdminLayout color={color} />}>
+          <Route index element={<AdminPage color={color} />} />
+          <Route
+            path="/admin/addThemeColor"
+            element={<ThemeColor color={color} />}
+          />
+          <Route path="/admin/viewUsers" element={<AllUsers color={color} />} />
+        </Route>
       </Routes>
     </div>
   );
