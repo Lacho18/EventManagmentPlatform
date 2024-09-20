@@ -52,7 +52,10 @@ function App() {
             element={<ThemeColor color={color} />}
           />
           <Route path="/admin/viewUsers" element={<AllUsers color={color} />} />
-          <Route path="/admin/userPage/:id" element={<UserPageAdminView />} />
+          <Route
+            path="/admin/userPage/:id"
+            element={<UserPageAdminView color={color} />}
+          />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
