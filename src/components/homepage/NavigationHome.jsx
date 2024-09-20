@@ -38,7 +38,6 @@ export default function NavigationHome({
     if (hasLoggedIn) {
       //Checks if the view is not already on saved items
       if (!onSavedItems) {
-        console.log("Ehooooo");
         const result = await useFetch("events", "GET", {
           conditions: { id: userData.savedEvents },
         });

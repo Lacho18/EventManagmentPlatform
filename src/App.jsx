@@ -15,6 +15,8 @@ import UpdateEvent from "./components/eventsComponents/UpdateEvent";
 import ThemeColor from "./components/AdminPage/ThemeColor";
 import AdminLayout from "./components/AdminPage/AdminLayout";
 import AllUsers from "./components/AdminPage/AllUsers";
+import PageNotFound from "./components/PageNotFound";
+import UserPageAdminView from "./components/AdminPage/UserPageAdminView";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,7 +52,9 @@ function App() {
             element={<ThemeColor color={color} />}
           />
           <Route path="/admin/viewUsers" element={<AllUsers color={color} />} />
+          <Route path="/admin/userPage/:id" element={<UserPageAdminView />} />
         </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );
