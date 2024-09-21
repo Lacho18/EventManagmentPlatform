@@ -3,10 +3,6 @@ import useFetch from "../../hooks/useFetch";
 import { useNavigate, useParams } from "react-router";
 
 /*
-  1. Dobavi ban button functionality
-  2. Napravi vuzmoshno trieneto, updaitvaneto i savaneto na eventi ot tqhnata lichna stranica
-  3. Da ne e vuzmojno stiganeto do stranica na event na koyto nqma svobodni mesta
-  4. ?Dobavi tablica za theme colors i pravi requesti kum neq
   5. Pochni chat app
 */
 
@@ -16,6 +12,8 @@ export default function UserPageAdminView({ color }) {
   const [currentUser, setCurrentUser] = useState({});
   const [eventsOrganizing, setEventsOrganizing] = useState([]);
   const [organizedPassedEvents, setOrganizedPassedEvents] = useState([]);
+  const [banWindow, setBanWindow] = useState(false);
+  const [deleteUserResponse, setDeleteUserResponse] = useState("");
   let yearsOld = 0;
 
   if (currentUser.dateOfBirth) {
@@ -60,7 +58,21 @@ export default function UserPageAdminView({ color }) {
     getUserData();
   }, []);
 
+  async function banUserHandler() {
+    const deleteResult = await useFetch("user", "DELETE", {
+      id: currentUser.id,
+    });
+
+    if (deleteResult.status === 200) {
+      setDeleteUserResponse(deleteResult.data.message);
+      setTimeout(() => {
+        navigate("/admin/viewUsers");
+      });
+    }
+  }
+
   if (!currentUser.id) return <div>Loading.....</div>;
+  if (deleteUserResponse !== "") return <div>{deleteUserResponse}</div>;
   return (
     <div
       className="w-4/5 h-screen rounded-3xl flex flex-col overflow-scroll"
@@ -177,10 +189,47 @@ export default function UserPageAdminView({ color }) {
         </p>
       </div>
       <div className="p-4 w-full flex justify-end">
-        <button className="p-5 text-lg font-bold bg-red-500 border-black border-4 rounded-md">
+        <button
+          className="p-5 text-lg font-bold bg-red-500 border-black border-4 rounded-md"
+          onClick={() => {
+            setBanWindow(true);
+          }}
+        >
           Ban user
         </button>
       </div>
+
+      {banWindow && (
+        <div
+          className="w-64 h-64 fixed top-1/2 left-1/2 flex flex-col justify-evenly items-center"
+          style={{
+            width: "30%",
+            backgroundColor: color.easyColor,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <p className="text-center">
+            Are you sure you want to ban user:{" "}
+            <span className="font-bold">
+              {currentUser.firstName} {currentUser.lastName}
+            </span>
+          </p>
+          <div className="w-full flex justify-evenly">
+            <button
+              className="w-12 h-10 p-2 bg-green-500 rounded"
+              onClick={() => banUserHandler()}
+            >
+              Yes
+            </button>
+            <button
+              className="w-12 h-10 p-2 bg-red-500 rounded"
+              onClick={() => setBanWindow(false)}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

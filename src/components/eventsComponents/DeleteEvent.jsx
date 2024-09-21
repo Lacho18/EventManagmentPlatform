@@ -7,15 +7,8 @@ export default function DeleteEvent({
   closeWindow,
   useFetch,
   dispatch,
+  color,
 }) {
-  /*
-        1. Napishi logicata za triene na event
-            1.1 Dobavi novo pole v structuranta na event v koeto shte sa idtata na userite koito sa si kupili bileti
-            1.2 Pri triene na event za vshichki IDTa v tozi nov masiv mahni gi v masiva willParticipate na vseki user
-            1.3 Vrushtanento na parite shte e premahvane na sumata na bileta ot moneySpent na user
-        
-        2. Izmisli metod za update na event
-    */
   const [responseMessage, setResponseMessage] = useState({
     message: "",
     status: 0,
@@ -24,6 +17,7 @@ export default function DeleteEvent({
   //Function that deletes a given event
   //setLoading is used to update the page dynamically after the event is deleted
   async function deletingEvent(e) {
+    console.log("Maika ti da eba");
     e.stopPropagation();
     dispatch(setLoading({ boolValue: true }));
     const result = await useFetch("events", "DELETE", { eventData });
@@ -44,8 +38,12 @@ export default function DeleteEvent({
   if (responseMessage.message !== "") {
     return (
       <div
-        className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center p-10"
-        style={{ transform: "translate(-75%, -50%)" }}
+        className="fixed top-1/2 left-1/2 z-40 rounded-3xl flex flex-col justify-center p-10"
+        style={{
+          transform: "translate(-75%, -50%)",
+          backgroundColor: color.lightColor,
+          opacity: "1",
+        }}
       >
         <div className="flex flex-col justify-center items-center m-5">
           <p>{responseMessage.message}</p>
@@ -77,8 +75,12 @@ export default function DeleteEvent({
 
   return (
     <div
-      className="fixed top-1/2 left-1/2 z-40 bg-white rounded-3xl flex flex-col justify-center p-10"
-      style={{ transform: "translate(-75%, -50%)" }}
+      className="fixed top-1/2 left-1/2 z-40 rounded-3xl flex flex-col justify-center p-10"
+      style={{
+        transform: "translate(-75%, -50%)",
+        backgroundColor: color.lightColor,
+        opacity: "1",
+      }}
     >
       <div className="flex flex-col justify-center items-center m-5">
         <p>

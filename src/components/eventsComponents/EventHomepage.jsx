@@ -4,11 +4,10 @@ import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import useDateFormat from "../../hooks/useDateFormat";
 import { useEffect, useState } from "react";
-import { MdAddBox, MdBookmarkRemove, MdBrowserUpdated } from "react-icons/md";
-import { TiDelete } from "react-icons/ti";
 import { setError, nullError } from "../../store/errorSlice";
 import { changeHandler } from "../../store/userSlice";
 import DeleteEvent from "./DeleteEvent";
+import EventFunctionButton from "./EventFunctionButtons";
 
 export default function EventHomepage({
   event,
@@ -138,47 +137,13 @@ export default function EventHomepage({
         style={{ borderColor: color.hardColor }}
       >
         {userHasLoggedIn && (
-          <div className="flex justify-end items-center">
-            {/*Button for deleting event, visible only from the organizer of the vent and the administrator*/}
-            {(userData.role === "admin" ||
-              userData.id === event.organizer_ID) && (
-              <button
-                className="text-3xl"
-                onClick={(e) => deleteEventHandler(event.id, e)}
-              >
-                <TiDelete />
-              </button>
-            )}
-
-            {/*Button for updating event, visible only from the organizer of the event and the administrator*/}
-            {(userData.role === "admin" ||
-              userData.id === event.organizer_ID) && (
-              <button
-                className="text-3xl"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate("/UpdateEvent/" + event.id);
-                }}
-              >
-                <MdBrowserUpdated />
-              </button>
-            )}
-
-            {/*Button that adds the current event to the saved events of the user*/}
-            <button className=" text-3xl">
-              {userData.savedEvents &&
-              userData.savedEvents.includes(event.id) ? (
-                <MdBookmarkRemove
-                  onClick={(e) => saveEventHandler(event.id, "DELETE", e)}
-                />
-              ) : (
-                <MdAddBox
-                  onClick={(e) => saveEventHandler(event.id, "GET", e)}
-                />
-              )}
-              {error !== "" && <p>{error}</p>}
-            </button>
-          </div>
+          <EventFunctionButton
+            userData={userData}
+            userHasLoggedIn={userHasLoggedIn}
+            event={event}
+            deleteEventHandler={deleteEventHandler}
+            error={error}
+          />
         )}
 
         <p className="italic text-sm basis-1/12">Places left:</p>
@@ -213,6 +178,7 @@ export default function EventHomepage({
           }}
           useFetch={useFetch}
           dispatch={dispatch}
+          color={color}
         />
       )}
     </div>

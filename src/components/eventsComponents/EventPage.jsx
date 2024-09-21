@@ -1,42 +1,39 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../store/loadingSlice";
 import useDateFormat from "../../hooks/useDateFormat";
 import { FaLocationDot } from "react-icons/fa6";
 import BuyTicket from "./BuyTicket";
-
-/*
-  Malko ostana
-  1. Dobavqne na stranica za update na event
-  2. Stranica na administratora (Da moje da trie potrebiteli)
-  3. Dobavqne na chat funcionalnostta
-
-  Za sledvashtiq put
-  1. Stranica za update na event
-  ?2. Stranica za administratora
-*/
+import EventFunctionButton from "./EventFunctionButtons";
+import DeleteEvent from "./DeleteEvent";
 
 export default function EventPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [eventData, setEventData] = useState({});
+  //Opens the buy ticket window
   const [isBuying, setIsBuying] = useState(false);
+  //Opens the delete event window
+  const [deleteEvent, setDeleteEvent] = useState(false);
 
   const userData = useSelector((state) => state.user.userData);
+  const userHasLoggedIn = useSelector((state) => state.user.hasLoggedIn);
   const color = useSelector((state) => state.themeColor.color);
   const loading = useSelector((state) => state.loading);
+  //Global error variable
+  const error = useSelector((state) => state.error.errorMessage);
+  //Formats the date on format month day, year
   const formattedDate = useDateFormat(eventData.event_date);
 
+  //The index that visualize the current image in the array of images in the event images array
   const [currentImage, setCurrentImage] = useState(1);
 
-  console.log(eventData);
-
-  //eventData
-
-  //gets the data for the selected event event
+  //gets the data for the selected event
   useEffect(() => {
+    //Finds the selected event
     async function getEventData() {
       dispatch(setLoading({ boolValue: true }));
       const response = await useFetch("events", "GET", {
@@ -53,7 +50,6 @@ export default function EventPage() {
     getEventData();
 
     return () => {
-      console.log("On dismount!");
       dispatch(setLoading({ boolValue: true }));
     };
   }, []);
@@ -76,14 +72,39 @@ export default function EventPage() {
     setIsBuying(true);
   }
 
+  function deleteEventHandler(id, e) {
+    e.stopPropagation();
+    setDeleteEvent(true);
+    navigate("/");
+  }
+
   if (loading.isLoading) {
     return <div>{loading.loadingMessage}</div>;
   } else {
+    if (eventData.places <= 0)
+      return (
+        <div
+          className="w-full h-screen flex justify-center items-center"
+          style={{ backgroundColor: color.hardColor }}
+        >
+          <p style={{ fontSize: "7em" }}>No places left for this event!</p>
+        </div>
+      );
     return (
       <div
         className="w-full h-auto"
         style={{ backgroundColor: color.hardColor }}
       >
+        {userHasLoggedIn && (
+          <EventFunctionButton
+            userData={userData}
+            userHasLoggedIn={userHasLoggedIn}
+            event={eventData}
+            deleteEventHandler={deleteEventHandler}
+            error={error}
+          />
+        )}
+
         <div className="flex w-full justify-between pt-10">
           <div className="basis-1/2 flex justify-center items-center">
             <img className="w-8-12 h-72 rounded-2xl" src={eventData.image[0]} />
@@ -239,6 +260,19 @@ export default function EventPage() {
             Price: <span className="font-bold">{eventData.price} BGN</span>
           </p>
         </div>
+
+        {deleteEvent && (
+          <DeleteEvent
+            userData={userData}
+            eventData={eventData}
+            closeWindow={() => {
+              setDeleteEvent(false);
+            }}
+            useFetch={useFetch}
+            dispatch={dispatch}
+            color={color}
+          />
+        )}
 
         {isBuying && (
           <BuyTicket
