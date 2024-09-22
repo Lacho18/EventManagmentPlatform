@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import ChatPageLeft from "../ChatsPageComponents/ChatPageLeft";
 import ChatsWindow from "../ChatsPageComponents/ChatsWindow";
 import ChatPagePeopleFilters from "../ChatsPageComponents/ChatPagePeopleFilters";
@@ -80,7 +80,8 @@ export default function ChatAppPage() {
       </div>
       <div className="basis-10/12 w-full flex">
         <ChatPageLeft color={color} />
-        <ChatsWindow color={color} />
+        {/*<ChatsWindow color={color} />*/}
+        <Outlet />
         <ChatPagePeopleFilters color={color} />
       </div>
     </div>
