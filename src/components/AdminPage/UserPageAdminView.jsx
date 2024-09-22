@@ -3,7 +3,8 @@ import useFetch from "../../hooks/useFetch";
 import { useNavigate, useParams } from "react-router";
 
 /*
-  5. Pochni chat app
+  1. Opravi prblema s vizyaliziraneto na delete prozoreca na event s 0 mesta
+  2. Pochni chat app
 */
 
 export default function UserPageAdminView({ color }) {

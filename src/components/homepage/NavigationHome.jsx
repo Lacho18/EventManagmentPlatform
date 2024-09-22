@@ -95,7 +95,7 @@ export default function NavigationHome({
           <img
             className="w-20 h-20 rounded-full mr-3"
             src={"http://localhost:3000/" + userData.userImage}
-            alt="No image ;)"
+            alt="No image"
             onClick={(event) => {
               //Checks if the window is shown in order to prevent activating the global event and show and hide immediately the user window
               if (!shownData) {
