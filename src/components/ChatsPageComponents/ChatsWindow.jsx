@@ -36,7 +36,7 @@ export default function ChatsWindow({ color }) {
   if (allMessages.length === 0) return <div>Loading....</div>;
   return (
     <div
-      className="basis-6/12 mr-1 flex justify-center"
+      className="basis-6/12 mr-1 flex justify-center h-full"
       style={{
         backgroundColor: color.heavyColor,
         borderTopRightRadius: "18px",
@@ -56,6 +56,7 @@ export default function ChatsWindow({ color }) {
             backgroundColor: color.lightColor,
             borderTopLeftRadius: "7px",
             borderTopRightRadius: "7px",
+            borderBottom: "1px solid black",
           }}
         >
           <img
@@ -65,15 +66,19 @@ export default function ChatsWindow({ color }) {
           <p className="text-xl pl-5">Petq Peteva</p>
         </div>
 
-        <div className="basis-9/12 flex flex-col">
-          {allMessages.map((message) => (
-            <MessageView
-              messageData={message}
-              type={senderId == message.senderId ? "sender" : "receiver"}
-              color={color}
-            />
-          ))}
+        <div className="basis-9/12" style={{ height: "75%" }}>
+          <div className="flex flex-col h-full overflow-y-auto">
+            {allMessages.map((message) => (
+              <MessageView
+                key={message.id}
+                messageData={message}
+                type={senderId == message.senderId ? "sender" : "receiver"}
+                color={color}
+              />
+            ))}
+          </div>
         </div>
+
         <div className="basis-1/12 h-full flex">
           <input
             className="h-full rounded-3xl p-2"

@@ -42,7 +42,11 @@ export default function ChatAppPage() {
     >
       <div
         className="basis-2/12 w-full justify-between flex pl-7 pr-7"
-        style={{ backgroundColor: color.lightColor, boxSizing: "border-box" }}
+        style={{
+          backgroundColor: color.lightColor,
+          boxSizing: "border-box",
+          height: "16.666667%",
+        }}
       >
         <div className="flex items-center h-full basis-2/6">
           <img
@@ -77,7 +81,7 @@ export default function ChatAppPage() {
           )}
         </div>
       </div>
-      <div className="basis-10/12 w-full flex">
+      <div className="basis-10/12 w-full flex h-full overflow-hidden">
         <ChatPageLeft color={color} />
         {/*<ChatsWindow color={color} />*/}
         <Outlet />

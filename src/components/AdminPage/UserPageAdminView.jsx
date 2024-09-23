@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useNavigate, useParams } from "react-router";
 
-/*
-  1. Opravi prblema s vizyaliziraneto na delete prozoreca na event s 0 mesta
-  2. Pochni chat app
-*/
-
 export default function UserPageAdminView({ color }) {
   const { id } = useParams();
   const navigate = useNavigate();
