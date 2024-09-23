@@ -2,9 +2,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router";
 import ChatPageLeft from "../ChatsPageComponents/ChatPageLeft";
-import ChatsWindow from "../ChatsPageComponents/ChatsWindow";
 import ChatPagePeopleFilters from "../ChatsPageComponents/ChatPagePeopleFilters";
-import NavigationHome from "../homepage/NavigationHome";
 import { Link } from "react-router-dom";
 
 export default function ChatAppPage() {
@@ -16,6 +14,7 @@ export default function ChatAppPage() {
   let leavingTimeout = null;
 
   useEffect(() => {
+    navigate("/chat/18/17");
     return () => {
       //Clears the timeout if user leaves the page earlier
       if (leavingTimeout) {
