@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { useParams } from "react-router";
 import useFetch from "../../hooks/useFetch";
@@ -10,19 +10,21 @@ export default function ChatsWindow({ color }) {
   const dispatch = useDispatch();
   const { senderId, receiverId } = useParams();
   const [allMessages, setAllMessages] = useState([]);
+  //Using references to store data about the receiver image and name
+  const receiverMessagesName = useRef("");
+  const receiverImage = useRef("");
   const error = useSelector((state) => state.error.errorMessage);
 
   useEffect(() => {
     async function getMessages() {
       const result = await useFetch("chats", "GET", { senderId, receiverId });
       console.log(result.data.messages);
-      result.data.messages.forEach((message) => {
-        console.log(senderId);
-        console.log(message.senderId);
-        console.log(senderId == message.senderId);
-      });
 
       if (result.status === 200) {
+        //Setting the name of the receiver of the messages
+        receiverMessagesName.current = result.data.receiverName;
+        //Setting the image of the receiver of the messages
+        receiverImage.current = result.data.receiverImage;
         setAllMessages(result.data.messages);
       } else {
         dispatch(setError(result.data.message));
@@ -61,14 +63,18 @@ export default function ChatsWindow({ color }) {
         >
           <img
             className="w-16 h-16 rounded-full"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNJryFTSQUV8Zuu_EGw2iUCpMbIIKWHBl2eQ&s"
+            src={
+              receiverImage.current !== ""
+                ? "http://localhost:3000/" + receiverImage.current
+                : "https://www.svgrepo.com/show/350417/user-circle.svg"
+            }
           />
-          <p className="text-xl pl-5">Petq Peteva</p>
+          <p className="text-xl pl-5">{receiverMessagesName.current}</p>
         </div>
 
         <div className="basis-9/12" style={{ height: "75%" }}>
-          <div className="flex flex-col h-full overflow-y-auto">
-            {allMessages.map((message) => (
+          <div className="flex flex-col-reverse h-full overflow-y-auto">
+            {allMessages.reverse().map((message) => (
               <MessageView
                 key={message.id}
                 messageData={message}

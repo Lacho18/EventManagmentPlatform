@@ -1,19 +1,56 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router";
 import ChatPageLeft from "../ChatsPageComponents/ChatPageLeft";
 import ChatPagePeopleFilters from "../ChatsPageComponents/ChatPagePeopleFilters";
 import { Link } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
 export default function ChatAppPage() {
   const navigate = useNavigate();
   const color = useSelector((state) => state.themeColor.color);
   const userData = useSelector((state) => state.user.userData);
   const userHasLoggedIn = useSelector((state) => state.user.hasLoggedIn);
+  const [specUsers, setSpecUsers] = useState([]);
+
+  let [chatWith, setChatWith] = useState([]);
+
+  console.log(chatWith);
 
   let leavingTimeout = null;
 
   useEffect(() => {
+    async function getUsers() {
+      const result = await useFetch("specUsers", "GET", {
+        userId: userData.id,
+      });
+
+      if (result.status === 200) {
+        setSpecUsers(result.data.allUsers);
+
+        if (userData.chats.length > 0) {
+          //Filters the array of every user by leaving just the who the user has chat with
+          setChatWith(() => {
+            let newArray = result.data.allUsers.filter((user) => {
+              if (
+                Array.isArray(userData.chats) &&
+                userData.chats.includes(Number(user.id))
+              ) {
+                return true;
+              } else {
+                return false;
+              }
+            });
+
+            return newArray;
+          });
+        }
+      } else {
+        console.log(result.data.message);
+      }
+    }
+
+    getUsers();
     navigate("/chat/18/17");
     return () => {
       //Clears the timeout if user leaves the page earlier
@@ -35,6 +72,9 @@ export default function ChatAppPage() {
     );
   }
 
+  console.log(specUsers);
+
+  if (specUsers && specUsers.length === 0) return <div>Loading.....</div>;
   return (
     <div
       className="w-screen h-screen min-h-screen flex flex-col"
@@ -82,10 +122,17 @@ export default function ChatAppPage() {
         </div>
       </div>
       <div className="basis-10/12 w-full flex h-full overflow-hidden">
-        <ChatPageLeft color={color} />
-        {/*<ChatsWindow color={color} />*/}
+        <ChatPageLeft
+          color={color}
+          chatWith={chatWith}
+          currentUserId={userData.id}
+        />
         <Outlet />
-        <ChatPagePeopleFilters color={color} />
+        <ChatPagePeopleFilters
+          color={color}
+          specUsers={specUsers}
+          userData={userData}
+        />
       </div>
     </div>
   );

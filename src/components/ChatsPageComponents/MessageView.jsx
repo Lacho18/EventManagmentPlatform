@@ -59,7 +59,7 @@ export default function MessageView({ messageData, type, color }) {
         className="text-xs italic opacity-50"
         style={type === "receiver" ? { alignSelf: "flex-end" } : {}}
       >
-        Before {messageSendBefore.duration - 1} {messageSendBefore.type}
+        Before {messageSendBefore.duration} {messageSendBefore.type}
       </p>
       <div
         className="flex items-center"
