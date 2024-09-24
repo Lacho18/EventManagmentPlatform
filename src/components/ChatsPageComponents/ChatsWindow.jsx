@@ -18,13 +18,14 @@ export default function ChatsWindow({ color }) {
   useEffect(() => {
     async function getMessages() {
       const result = await useFetch("chats", "GET", { senderId, receiverId });
-      console.log(result.data.messages);
+      console.log(result.data);
+
+      //Setting the name of the receiver of the messages
+      receiverMessagesName.current = result.data.receiverName;
+      //Setting the image of the receiver of the messages
+      receiverImage.current = result.data.receiverImage;
 
       if (result.status === 200) {
-        //Setting the name of the receiver of the messages
-        receiverMessagesName.current = result.data.receiverName;
-        //Setting the image of the receiver of the messages
-        receiverImage.current = result.data.receiverImage;
         setAllMessages(result.data.messages);
       } else {
         dispatch(setError(result.data.message));
@@ -32,10 +33,11 @@ export default function ChatsWindow({ color }) {
       }
     }
 
+    setAllMessages([]);
     getMessages();
-  }, []);
+  }, [receiverId]);
 
-  if (allMessages.length === 0) return <div>Loading....</div>;
+  if (receiverMessagesName.current === "") return <div>Loading....</div>;
   return (
     <div
       className="basis-6/12 mr-1 flex justify-center h-full"
@@ -45,9 +47,6 @@ export default function ChatsWindow({ color }) {
         borderTopLeftRadius: "18px",
       }}
     >
-      {error !== "" && (
-        <p className="text-xl font-bold text-red-500">{error}</p>
-      )}
       <div
         className="w-11/12 h-11/12 border-black border-8 border-b-0 flex flex-col"
         style={{ borderTopLeftRadius: "18px", borderTopRightRadius: "18px" }}
@@ -74,6 +73,9 @@ export default function ChatsWindow({ color }) {
 
         <div className="basis-9/12" style={{ height: "75%" }}>
           <div className="flex flex-col-reverse h-full overflow-y-auto">
+            {error !== "" && (
+              <p className="text-xl font-bold text-red-500">{error}</p>
+            )}
             {allMessages.reverse().map((message) => (
               <MessageView
                 key={message.id}

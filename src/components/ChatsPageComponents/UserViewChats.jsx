@@ -5,7 +5,7 @@ export default function UserViewChats({ currentUserId, userData, color }) {
   const navigate = useNavigate();
   return (
     <div
-      className="flex justify-between p-3 w-2/4 rounded-md main-user-view-chat"
+      className="flex justify-between m-3 p-3 w-7/12 rounded-md main-user-view-chat"
       style={{
         backgroundColor: color.heavyColor,
         border: "3px solid black",
