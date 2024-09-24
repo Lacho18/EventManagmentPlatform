@@ -3,7 +3,7 @@ import Home from "./components/homepage/Home";
 import LogIn from "./components/userpage/LogIn";
 import SignUp from "./components/userpage/SignUp";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { hide } from "./store/clickSlice";
 import EventPage from "./components/eventsComponents/EventPage";
 import { useSelector } from "react-redux";
@@ -19,21 +19,44 @@ import PageNotFound from "./components/PageNotFound";
 import UserPageAdminView from "./components/AdminPage/UserPageAdminView";
 import ChatsWindow from "./components/ChatsPageComponents/ChatsWindow";
 
+import { socket } from "./socket";
+
 function App() {
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const dispatch = useDispatch();
   const color = useSelector((state) => state.themeColor.color);
 
   useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    function onFooEvent(value) {
+      setFooEvents((previous) => [...previous, value]);
+    }
+
     const handleClick = () => {
       dispatch(hide());
     };
 
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("foo", onFooEvent);
     document.addEventListener("click", handleClick);
 
     return () => {
       document.removeEventListener("click", handleClick);
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("foo", onFooEvent);
     };
   }, []);
+
+  ///**/
 
   return (
     <div style={{ color: color.color === "black" ? "white" : "black" }}>

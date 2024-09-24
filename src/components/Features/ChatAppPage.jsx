@@ -5,8 +5,11 @@ import ChatPageLeft from "../ChatsPageComponents/ChatPageLeft";
 import ChatPagePeopleFilters from "../ChatsPageComponents/ChatPagePeopleFilters";
 import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+//import { io } from "socket.io-client";
 
 export default function ChatAppPage() {
+  //const socket = io("http://localhost:3000");
+
   const navigate = useNavigate();
   const color = useSelector((state) => state.themeColor.color);
   const userData = useSelector((state) => state.user.userData);
@@ -20,6 +23,7 @@ export default function ChatAppPage() {
   let leavingTimeout = null;
 
   useEffect(() => {
+    socket.emit("join", userData.id);
     async function getUsers() {
       const result = await useFetch("specUsers", "GET", {
         userId: userData.id,
