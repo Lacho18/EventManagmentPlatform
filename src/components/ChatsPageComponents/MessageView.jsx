@@ -54,7 +54,10 @@ export default function MessageView({ messageData, type, color }) {
   const messageSendBefore = calculateTime(messageData.time_of_send);
 
   return (
-    <div className="w-auto h-auto p-2 mt-2 mb-2 flex flex-col" style={style}>
+    <div
+      className="w-auto h-auto min-w-32 p-2 mt-2 mb-2 flex flex-col"
+      style={style}
+    >
       <p
         className="text-xs italic opacity-50"
         style={type === "receiver" ? { alignSelf: "flex-end" } : {}}

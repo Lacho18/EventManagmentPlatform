@@ -5,11 +5,17 @@ import useFetch from "../../hooks/useFetch";
 import { useDispatch, useSelector } from "react-redux";
 import { setError, nullError } from "../../store/errorSlice";
 import MessageView from "./MessageView";
+import { sendMessage } from "../../webSocket";
+import { setCurrentChatMessages } from "../../store/chatsSlice";
 
 export default function ChatsWindow({ color }) {
   const dispatch = useDispatch();
   const { senderId, receiverId } = useParams();
-  const [allMessages, setAllMessages] = useState([]);
+  const allMessages = useSelector((state) => state.chats.currentChatMessages);
+  //Reversing the array and visualizing all data on reverse
+  const allMessagesCopy = [...allMessages].reverse();
+  //Current message that is writing
+  const [currentMessage, setCurrentMessage] = useState("");
   //Using references to store data about the receiver image and name
   const receiverMessagesName = useRef("");
   const receiverImage = useRef("");
@@ -26,16 +32,31 @@ export default function ChatsWindow({ color }) {
       receiverImage.current = result.data.receiverImage;
 
       if (result.status === 200) {
-        setAllMessages(result.data.messages);
+        //setAllMessages(result.data.messages);
+        dispatch(setCurrentChatMessages({ messages: result.data.messages }));
       } else {
         dispatch(setError(result.data.message));
         setTimeout(() => dispatch(nullError()), 3000);
       }
     }
 
-    setAllMessages([]);
+    //setAllMessages([]);
     getMessages();
   }, [receiverId]);
+
+  function handleMessageSend() {
+    const messageStructure = {
+      senderId,
+      receiverId,
+      message: currentMessage,
+      time_of_send: new Date(),
+    };
+
+    sendMessage(messageStructure);
+    setCurrentMessage("");
+  }
+
+  console.log(receiverMessagesName.current);
 
   if (receiverMessagesName.current === "") return <div>Loading....</div>;
   return (
@@ -76,7 +97,7 @@ export default function ChatsWindow({ color }) {
             {error !== "" && (
               <p className="text-xl font-bold text-red-500">{error}</p>
             )}
-            {allMessages.reverse().map((message) => (
+            {allMessagesCopy.map((message) => (
               <MessageView
                 key={message.id}
                 messageData={message}
@@ -89,13 +110,31 @@ export default function ChatsWindow({ color }) {
 
         <div className="basis-1/12 h-full flex">
           <input
-            className="h-full rounded-3xl p-2"
+            className="h-full w-11/12 rounded-3xl p-2 pr-8 basis-9/12"
             type="text"
             placeholder="Enter message"
+            value={currentMessage}
+            onChange={(e) => {
+              setCurrentMessage(e.target.value);
+            }}
           />
-          <button className="ml-5 mr-5 text-3xl bg-blue-600 rounded-full w-14 h-14 flex justify-center items-center">
-            <IoSend />
-          </button>
+          <div className="basis-3/12 flex justify-between pl-3 pr-3">
+            <button
+              className="text-3xl font-bold p-3 w14 h-14 rounded-full"
+              style={{ backgroundColor: color.easyColor }}
+              onClick={() => {
+                setCurrentMessage("");
+              }}
+            >
+              X
+            </button>
+            <button
+              className="ml-5 mr-5 text-3xl bg-blue-600 rounded-full w-14 h-14 flex justify-center items-center"
+              onClick={handleMessageSend}
+            >
+              <IoSend />
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { logIn, changeHandler, nullData } from "../../store/userSlice";
 import { setError, nullError } from "../../store/errorSlice";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
+import { sendMessage } from "../../webSocket";
 
 export default function LogIn() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ export default function LogIn() {
       const response = await useFetch("user", "GET", loginDataUser);
 
       if (response.status === 200) {
+        sendMessage({ userId: response.data.user.id });
         dispatch(logIn(response.data.user));
         dispatch(nullData({ operation: "loginUser" }));
         navigate("/");

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:4000/";
+const url = "http://localhost:3000/";
 
 //Hook that handles every fetch request
 const useFetch = async (route, method, data) => {

@@ -6,6 +6,7 @@ import themeColorReducer from './themeColorSlice';
 import loadingReducer from './loadingSlice';
 import eventsReducer from './eventsSlice';
 import singleEventReducer from './singleEventSlice';
+import chatsReducer from './chatsSlice';
 
 const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
         loading: loadingReducer,
         events: eventsReducer,
         singleEvent: singleEventReducer,
+        chats: chatsReducer,
     },
 });
 

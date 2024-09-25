@@ -18,45 +18,24 @@ import AllUsers from "./components/AdminPage/AllUsers";
 import PageNotFound from "./components/PageNotFound";
 import UserPageAdminView from "./components/AdminPage/UserPageAdminView";
 import ChatsWindow from "./components/ChatsPageComponents/ChatsWindow";
-
-import { socket } from "./socket";
+import { connectWebSocket } from "./webSocket";
 
 function App() {
-  const [isConnected, setIsConnected] = useState(socket.connected);
   const dispatch = useDispatch();
   const color = useSelector((state) => state.themeColor.color);
 
   useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-    }
-
-    function onFooEvent(value) {
-      setFooEvents((previous) => [...previous, value]);
-    }
-
+    connectWebSocket("ws://localhost:8080", dispatch);
     const handleClick = () => {
       dispatch(hide());
     };
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("foo", onFooEvent);
     document.addEventListener("click", handleClick);
 
     return () => {
       document.removeEventListener("click", handleClick);
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("foo", onFooEvent);
     };
   }, []);
-
-  ///**/
 
   return (
     <div style={{ color: color.color === "black" ? "white" : "black" }}>

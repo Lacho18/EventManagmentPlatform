@@ -5,11 +5,14 @@ import ChatPageLeft from "../ChatsPageComponents/ChatPageLeft";
 import ChatPagePeopleFilters from "../ChatsPageComponents/ChatPagePeopleFilters";
 import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-//import { io } from "socket.io-client";
+
+/*
+  1.Probvai dali sled kato e restartiran kompytura raboti socket.io
+  2.Ako ne raboti izpolzvay Web Socket
+  3.Dovurshi real time chat appa
+*/
 
 export default function ChatAppPage() {
-  //const socket = io("http://localhost:3000");
-
   const navigate = useNavigate();
   const color = useSelector((state) => state.themeColor.color);
   const userData = useSelector((state) => state.user.userData);
@@ -23,7 +26,6 @@ export default function ChatAppPage() {
   let leavingTimeout = null;
 
   useEffect(() => {
-    socket.emit("join", userData.id);
     async function getUsers() {
       const result = await useFetch("specUsers", "GET", {
         userId: userData.id,
@@ -55,7 +57,6 @@ export default function ChatAppPage() {
     }
 
     getUsers();
-    navigate("/chat/18/17");
     return () => {
       //Clears the timeout if user leaves the page earlier
       if (leavingTimeout) {

@@ -41,6 +41,7 @@ export default function ChatPagePeopleFilters({ color, specUsers, userData }) {
         </p>
         {organizersOfEventsThatWillParticipate.map((organizer) => (
           <UserViewChats
+            key={organizer.id}
             currentUserId={userData.id}
             userData={organizer}
             color={color}
@@ -55,6 +56,7 @@ export default function ChatPagePeopleFilters({ color, specUsers, userData }) {
         </p>
         {administrators.map((admin) => (
           <UserViewChats
+            key={admin.id}
             currentUserId={userData.id}
             userData={admin}
             color={color}
@@ -67,6 +69,7 @@ export default function ChatPagePeopleFilters({ color, specUsers, userData }) {
         <p className="text-sm italic opacity-50 p-1">Other users</p>
         {participants.map((participant) => (
           <UserViewChats
+            key={participant.id}
             currentUserId={userData.id}
             userData={participant}
             color={color}

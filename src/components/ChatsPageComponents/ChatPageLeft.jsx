@@ -16,6 +16,7 @@ export default function ChatPageLeft({ color, chatWith, currentUserId }) {
           <p className="text-lg pb-3">Recent chats</p>
           {chatWith.map((userData) => (
             <UserViewChats
+              key={userData.id}
               currentUserId={currentUserId}
               userData={userData}
               color={color}
