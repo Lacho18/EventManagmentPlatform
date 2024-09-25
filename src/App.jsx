@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./components/homepage/Home";
 import LogIn from "./components/userpage/LogIn";
 import SignUp from "./components/userpage/SignUp";
@@ -21,11 +21,20 @@ import ChatsWindow from "./components/ChatsPageComponents/ChatsWindow";
 import { connectWebSocket } from "./webSocket";
 
 function App() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const color = useSelector((state) => state.themeColor.color);
+  const [currentPath, setCurrentPath] = useState("");
+
+  console.log(currentPath);
 
   useEffect(() => {
-    connectWebSocket("ws://localhost:8080", dispatch);
+    setCurrentPath(location.pathname);
+    connectWebSocket(
+      "ws://localhost:8080",
+      dispatch,
+      currentPath === "" ? location.pathname : currentPath
+    );
     const handleClick = () => {
       dispatch(hide());
     };
@@ -35,7 +44,7 @@ function App() {
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [location.pathname]);
 
   return (
     <div style={{ color: color.color === "black" ? "white" : "black" }}>

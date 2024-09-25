@@ -5,6 +5,7 @@ const chatsSlice = createSlice({
     initialState: {
         currentChatMessages: [],
         hasChatWithArray: [],
+        unreadMessages: 0,
     },
     reducers: {
         //Sets the array of messages that come from /chats GET method from the backend
@@ -15,7 +16,11 @@ const chatsSlice = createSlice({
         addNewMessage: (state, action) => {
             state.currentChatMessages = [...state.currentChatMessages, action.payload.newMessage];
 
-            console.log(state.currentChatMessages);
+            console.log(action.payload.currentPath);
+            if (!action.payload.currentPath.includes('chat')) {
+                console.log("ARE ot purviq put");
+                state.unreadMessages = state.unreadMessages + 1;
+            }
         },
         //Clears the array of messages that is visualized on the ChatsWindow component
         clearCurrentMessages: (state) => {
@@ -38,10 +43,14 @@ const chatsSlice = createSlice({
         //Clears the previous chat fields
         clearPrevChatsArray: (state) => {
             state.hasChatWithArray = [];
+        },
+
+        nullUnreadMessages: (state) => {
+            state.unreadMessages = 0;
         }
     },
 });
 
 export const { setCurrentChatMessages, addNewMessage, clearCurrentMessages,
-    setChatWithArray, addChatWith, clearPrevChatsArray } = chatsSlice.actions;
+    setChatWithArray, addChatWith, clearPrevChatsArray, nullUnreadMessages } = chatsSlice.actions;
 export default chatsSlice.reducer;

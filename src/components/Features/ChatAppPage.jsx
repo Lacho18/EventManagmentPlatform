@@ -5,13 +5,7 @@ import ChatPageLeft from "../ChatsPageComponents/ChatPageLeft";
 import ChatPagePeopleFilters from "../ChatsPageComponents/ChatPagePeopleFilters";
 import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-import { setChatWithArray } from "../../store/chatsSlice";
-
-/*
-  1.Probvai dali sled kato e restartiran kompytura raboti socket.io
-  2.Ako ne raboti izpolzvay Web Socket
-  3.Dovurshi real time chat appa
-*/
+import { setChatWithArray, nullUnreadMessages } from "../../store/chatsSlice";
 
 export default function ChatAppPage() {
   const navigate = useNavigate();
@@ -20,11 +14,13 @@ export default function ChatAppPage() {
   const userData = useSelector((state) => state.user.userData);
   const userHasLoggedIn = useSelector((state) => state.user.hasLoggedIn);
   const prevChats = useSelector((state) => state.chats.hasChatWithArray);
+  const unreadMessages = useSelector((state) => state.chats.unreadMessages);
   const [specUsers, setSpecUsers] = useState([]);
 
-  let [chatWith, setChatWith] = useState([]);
-
-  console.log(chatWith);
+  //Nulls the unread messages which increment every time the user receives a message but he is not on chats route
+  if (unreadMessages > 0) {
+    dispatch(nullUnreadMessages());
+  }
 
   let leavingTimeout = null;
 
@@ -38,24 +34,8 @@ export default function ChatAppPage() {
         setSpecUsers(result.data.allUsers);
 
         if (userData.chats.length > 0) {
-          //Filters the array of every user by leaving just the who the user has chat with
-          console.log("TYKA GLEDAY!");
-          console.log(userData.chats);
+          //Filters the array of every user by leaving just the one that has users chat with
           dispatch(setChatWithArray({ prevChats: userData.chats }));
-          /*setChatWith(() => {
-            let newArray = result.data.allUsers.filter((user) => {
-              if (
-                Array.isArray(userData.chats) &&
-                userData.chats.includes(Number(user.id))
-              ) {
-                return true;
-              } else {
-                return false;
-              }
-            });
-
-            return newArray;
-          });*/
         }
       } else {
         console.log(result.data.message);

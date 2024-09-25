@@ -2,7 +2,7 @@ import { addNewMessage } from "./store/chatsSlice";
 
 let ws;
 
-export const connectWebSocket = (url, dispatch) => {
+export const connectWebSocket = (url, dispatch, currentPath) => {
     if (!ws) {
         ws = new WebSocket(url);
 
@@ -14,7 +14,7 @@ export const connectWebSocket = (url, dispatch) => {
             console.log(event);
             //The message that is send with web socket ti the receiver and sender of the message
             const receivedMessage = JSON.parse(event.data);
-            dispatch(addNewMessage({ newMessage: receivedMessage }));
+            dispatch(addNewMessage({ newMessage: receivedMessage, currentPath: currentPath }));
         };
 
         ws.onclose = () => {

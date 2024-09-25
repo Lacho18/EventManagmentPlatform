@@ -31,6 +31,8 @@ export default function NavigationHome({
 
   const eventsSliceStates = useSelector((state) => state.events);
 
+  const unreadMessages = useSelector((state) => state.chats.unreadMessages);
+
   //Function that handles the click of the saved items button
   //This visualize in 'EventView' only the saved events from the user'
   async function saveButtonHandler() {
@@ -125,6 +127,11 @@ export default function NavigationHome({
         <div className="basis-3/5 h-full buttons-nav">
           <Link to="/chat">
             <IoChatbubbleEllipses className="mr-2 text-3xl" /> Chats
+            {unreadMessages > 0 && (
+              <div className="bg-orange-500 rounded-full text-sm w-5 h-5 text-center">
+                {unreadMessages}
+              </div>
+            )}
           </Link>
           <button onClick={saveButtonHandler}>
             <LiaSaveSolid className="mr-2 text-3xl" /> Saved{" "}
