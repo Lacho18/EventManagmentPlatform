@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router";
 import ChatPageLeft from "../ChatsPageComponents/ChatPageLeft";
 import ChatPagePeopleFilters from "../ChatsPageComponents/ChatPagePeopleFilters";
 import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import { setChatWithArray } from "../../store/chatsSlice";
 
 /*
   1.Probvai dali sled kato e restartiran kompytura raboti socket.io
@@ -14,9 +15,11 @@ import useFetch from "../../hooks/useFetch";
 
 export default function ChatAppPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const color = useSelector((state) => state.themeColor.color);
   const userData = useSelector((state) => state.user.userData);
   const userHasLoggedIn = useSelector((state) => state.user.hasLoggedIn);
+  const prevChats = useSelector((state) => state.chats.hasChatWithArray);
   const [specUsers, setSpecUsers] = useState([]);
 
   let [chatWith, setChatWith] = useState([]);
@@ -36,7 +39,10 @@ export default function ChatAppPage() {
 
         if (userData.chats.length > 0) {
           //Filters the array of every user by leaving just the who the user has chat with
-          setChatWith(() => {
+          console.log("TYKA GLEDAY!");
+          console.log(userData.chats);
+          dispatch(setChatWithArray({ prevChats: userData.chats }));
+          /*setChatWith(() => {
             let newArray = result.data.allUsers.filter((user) => {
               if (
                 Array.isArray(userData.chats) &&
@@ -49,7 +55,7 @@ export default function ChatAppPage() {
             });
 
             return newArray;
-          });
+          });*/
         }
       } else {
         console.log(result.data.message);
@@ -76,8 +82,6 @@ export default function ChatAppPage() {
       </div>
     );
   }
-
-  console.log(specUsers);
 
   if (specUsers && specUsers.length === 0) return <div>Loading.....</div>;
   return (
@@ -129,7 +133,8 @@ export default function ChatAppPage() {
       <div className="basis-10/12 w-full flex h-full overflow-hidden">
         <ChatPageLeft
           color={color}
-          chatWith={chatWith}
+          chatWithIds={prevChats}
+          specUsers={specUsers}
           currentUserId={userData.id}
         />
         <Outlet />

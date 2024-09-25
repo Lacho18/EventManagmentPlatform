@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setError, nullError } from "../../store/errorSlice";
 import MessageView from "./MessageView";
 import { sendMessage } from "../../webSocket";
-import { setCurrentChatMessages } from "../../store/chatsSlice";
+import {
+  addChatWith,
+  clearCurrentMessages,
+  setCurrentChatMessages,
+} from "../../store/chatsSlice";
 
 export default function ChatsWindow({ color }) {
   const dispatch = useDispatch();
@@ -22,6 +26,9 @@ export default function ChatsWindow({ color }) {
   const error = useSelector((state) => state.error.errorMessage);
 
   useEffect(() => {
+    if (allMessages.length > 0) {
+      dispatch(clearCurrentMessages());
+    }
     async function getMessages() {
       const result = await useFetch("chats", "GET", { senderId, receiverId });
       console.log(result.data);
@@ -44,7 +51,7 @@ export default function ChatsWindow({ color }) {
     getMessages();
   }, [receiverId]);
 
-  function handleMessageSend() {
+  async function handleMessageSend() {
     const messageStructure = {
       senderId,
       receiverId,
@@ -52,11 +59,17 @@ export default function ChatsWindow({ color }) {
       time_of_send: new Date(),
     };
 
+    console.log("ALOOOOOOOOO");
+    //Adds receiver id to the array of recent chats in order to send the new chat on left component
+    dispatch(addChatWith({ newChat: receiverId }));
+    //Sends the message to the backend with the websocket
     sendMessage(messageStructure);
+    //Clears the input tag after sending message
     setCurrentMessage("");
-  }
+    const postMessage = await useFetch("chats", "POST", messageStructure);
 
-  console.log(receiverMessagesName.current);
+    console.log(postMessage.data.message);
+  }
 
   if (receiverMessagesName.current === "") return <div>Loading....</div>;
   return (

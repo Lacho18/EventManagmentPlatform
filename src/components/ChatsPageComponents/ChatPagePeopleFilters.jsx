@@ -14,8 +14,6 @@ export default function ChatPagePeopleFilters({ color, specUsers, userData }) {
     userData.willParticipate.includes(user.id)
   );
 
-  console.log(organizersOfEventsThatWillParticipate);
-
   //Getting all the administrators
   const administrators = specUsersCopy.filter((user) => user.role === "admin");
 

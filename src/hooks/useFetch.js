@@ -7,7 +7,7 @@ const useFetch = async (route, method, data) => {
     let response = {};
     switch (method) {
         case "GET":
-            console.log(data);
+            //console.log(data);
             if (data) {
                 console.log(data);
                 try {
