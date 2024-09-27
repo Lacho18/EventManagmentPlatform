@@ -6,7 +6,7 @@ const userSlice = createSlice({
         hasLoggedIn: false,
         onSavedItems: false,
         userData: {},
-        loginUser: {     
+        loginUser: {
             email: "",
             password: ""
         },
@@ -42,8 +42,16 @@ const userSlice = createSlice({
         removeSaved: (state) => {
             state.onSavedItems = false;
         },
+        //On message send on the chat app, the array is updated so that the user that lastly sends the message to be first and this dynamically changes it
+        setsUserChats: (state, action) => {
+            if (state.hasLoggedIn) {
+                if (state.userData) {
+                    state.userData.chats = action.payload.userChats
+                }
+            }
+        }
     },
 });
 
-export const { logIn, logOut, changeHandler, nullData, onSavedButtonClicked, removeSaved } = userSlice.actions;
+export const { logIn, logOut, changeHandler, nullData, onSavedButtonClicked, removeSaved, setsUserChats } = userSlice.actions;
 export default userSlice.reducer;

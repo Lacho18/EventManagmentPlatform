@@ -15,6 +15,7 @@ const chatsSlice = createSlice({
         //Adds new message to the array in order to make real time chat application
         addNewMessage: (state, action) => {
             state.currentChatMessages = [...state.currentChatMessages, action.payload.newMessage];
+            console.log(state.currentChatMessages);
 
             console.log(action.payload.currentPath);
             if (!action.payload.currentPath.includes('chat')) {

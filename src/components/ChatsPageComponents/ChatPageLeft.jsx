@@ -6,9 +6,23 @@ export default function ChatPageLeft({
   specUsers,
   currentUserId,
 }) {
-  const prevChatUsers = specUsers.filter((user) =>
+  console.log(chatWithIds);
+  let prevChatUsers = specUsers.filter((user) =>
     chatWithIds.includes(Number(user.id))
   );
+
+  //Function that sorts the array in a way most recent chat
+  function sortByIds(idsArray, objectsArray) {
+    let sortedObjectsArray = idsArray.map((id) => {
+      let currentObject = objectsArray.find((user) => Number(user.id) === id);
+
+      return currentObject;
+    });
+
+    return sortedObjectsArray;
+  }
+
+  prevChatUsers = sortByIds(chatWithIds, prevChatUsers);
 
   return (
     <div

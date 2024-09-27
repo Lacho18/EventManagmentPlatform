@@ -7,6 +7,15 @@ import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { setChatWithArray, nullUnreadMessages } from "../../store/chatsSlice";
 
+/*
+  THE END IS NEAR
+  1.Napravi masiva chats ot users tablicata taka che da priema logicata na most recent potrebitel
+  2.Ogleday saita proveri za propusnata funcionalnost
+  3.Opitay se da go schypish na mesta ne na vsqkude :)
+  4.Iztriy silishnite (koito sa povecheto) console.log() logove
+  5.Zapochni documentaciq na proekta
+*/
+
 export default function ChatAppPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
