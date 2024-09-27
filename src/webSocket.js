@@ -43,3 +43,5 @@ export const disconnectWebSocket = () => {
         ws.close();
     }
 };
+
+export default ws;
