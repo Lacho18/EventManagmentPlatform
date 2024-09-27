@@ -1,4 +1,4 @@
-import { addNewMessage } from "./store/chatsSlice";
+import { addNewMessage, setChatWithArray } from "./store/chatsSlice";
 
 let ws;
 
@@ -12,14 +12,11 @@ export const connectWebSocket = (url, dispatch, currentPath) => {
 
         ws.onmessage = (event) => {
             console.log(event.data);
-            let userPrevChats = event.data.chats;
-            if (userPrevChats.includes(event.data.senderId)) {
-                let indexOfSender = userPrevChats.indexOf(event.data.senderId);
 
-            }
             //The message that is send with web socket ti the receiver and sender of the message
             const receivedMessage = JSON.parse(event.data);
             dispatch(addNewMessage({ newMessage: receivedMessage, currentPath: currentPath }));
+            dispatch(setChatWithArray({ prevChats: receivedMessage.chats }));
         };
 
         ws.onclose = () => {

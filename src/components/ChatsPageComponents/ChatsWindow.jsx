@@ -70,7 +70,7 @@ export default function ChatsWindow({ color }) {
     //Sends the message to the backend with the websocket
     sendMessage(messageStructure);
     dispatch(setsUserChats({ userChats: postMessage.data.userChats }));
-    dispatch(setChatWithArray({ prevChats: postMessage.data.userChats }));
+    //dispatch(setChatWithArray({ prevChats: postMessage.data.userChats }));
     console.log(postMessage.data.message + " " + postMessage.data.userChats);
   }
 

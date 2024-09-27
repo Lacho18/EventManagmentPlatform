@@ -6,7 +6,6 @@ export default function ChatPageLeft({
   specUsers,
   currentUserId,
 }) {
-  console.log(chatWithIds);
   let prevChatUsers = specUsers.filter((user) =>
     chatWithIds.includes(Number(user.id))
   );
@@ -26,7 +25,7 @@ export default function ChatPageLeft({
 
   return (
     <div
-      className="basis-3/12 mr-1"
+      className="basis-3/12 mr-1 overflow-y-scroll"
       style={{
         backgroundColor: color.hardColor,
         borderTopRightRadius: "18px",
