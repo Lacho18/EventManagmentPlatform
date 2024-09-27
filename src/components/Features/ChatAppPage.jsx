@@ -8,12 +8,10 @@ import useFetch from "../../hooks/useFetch";
 import { setChatWithArray, nullUnreadMessages } from "../../store/chatsSlice";
 
 /*
-  THE END IS NEAR
-  1.Napravi masiva chats ot users tablicata taka che da priema logicata na most recent potrebitel
-  2.Ogleday saita proveri za propusnata funcionalnost
-  3.Opitay se da go schypish na mesta ne na vsqkude :)
-  4.Iztriy silishnite (koito sa povecheto) console.log() logove
-  5.Zapochni documentaciq na proekta
+  1. Ogleday proekta
+  2. Provery koi poleta da se mahnat ot update user (Dali e dobra ideq rolq da mojeda se smenq)
+  3. Napravi cifrite za stranica cherni na dark theme
+  4. Razgleday problemite sus saved items
 */
 
 export default function ChatAppPage() {
@@ -34,6 +32,10 @@ export default function ChatAppPage() {
   let leavingTimeout = null;
 
   useEffect(() => {
+    //Creates event that controls the click of the back button
+    window.addEventListener("popstate", () => {
+      navigate("/");
+    });
     async function getUsers() {
       const result = await useFetch("specUsers", "GET", {
         userId: userData.id,
@@ -53,6 +55,10 @@ export default function ChatAppPage() {
 
     getUsers();
     return () => {
+      //Removes the event that controls the click of the back button
+      window.removeEventListener("popstate", () => {
+        navigate("/");
+      });
       //Clears the timeout if user leaves the page earlier
       if (leavingTimeout) {
         clearTimeout(leavingTimeout);

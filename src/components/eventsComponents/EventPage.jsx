@@ -30,6 +30,10 @@ export default function EventPage() {
 
   //The index that visualize the current image in the array of images in the event images array
   const [currentImage, setCurrentImage] = useState(1);
+  //State that toggles whether the email is shown or not
+  const [shownEmail, setShownEmail] = useState(false);
+
+  console.log(userData);
 
   //gets the data for the selected event
   useEffect(() => {
@@ -40,7 +44,7 @@ export default function EventPage() {
         conditions: { id: id },
         join: {
           joiningWith: "users",
-          fieldsToGet: ["firstName", "lastName", "userImage"],
+          fieldsToGet: ["firstName", "lastName", "userImage", "email"],
         },
       });
       setEventData(response.data.data[0]);
@@ -150,8 +154,20 @@ export default function EventPage() {
             <p className="text-2xl font-bold">
               {eventData.firstName} {eventData.lastName}
             </p>
-            <button className="underline text-lg">Open chat</button>
-            <p className="underline text-lg">Nqkakuv email</p>
+            <button
+              className="underline text-lg"
+              onClick={() => {
+                navigate(`/chat/${userData.id}/${eventData.organizer_ID}`);
+              }}
+            >
+              Open chat
+            </button>
+            <button
+              className="underline text-lg"
+              onClick={() => setShownEmail((oldValue) => !oldValue)}
+            >
+              {shownEmail ? eventData.email : "Email"}
+            </button>
           </div>
           <div className="basis-1/2 flex justify-center items-center">
             <img
