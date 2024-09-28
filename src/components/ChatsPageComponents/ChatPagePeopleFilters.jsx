@@ -2,7 +2,6 @@ import { useState } from "react";
 import UserViewChats from "./UserViewChats";
 
 export default function ChatPagePeopleFilters({ color, specUsers, userData }) {
-  const [searchText, setSearchText] = useState("");
   const specUsersCopy = specUsers;
   const [allFiltersTypes, setAllFiltersTypes] = useState([
     specUsersCopy.filter((user) => userData.willParticipate.includes(user.id)),

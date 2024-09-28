@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { setLoading } from "../../store/loadingSlice";
+import { changePage } from "../../store/eventsSlice";
 
 export default function DeleteEvent({
   userData,
@@ -17,12 +18,9 @@ export default function DeleteEvent({
   //Function that deletes a given event
   //setLoading is used to update the page dynamically after the event is deleted
   async function deletingEvent(e) {
-    console.log("Maika ti da eba");
     e.stopPropagation();
     dispatch(setLoading({ boolValue: true }));
     const result = await useFetch("events", "DELETE", { eventData });
-
-    console.log(result);
 
     setResponseMessage((oldData) => {
       return {
@@ -33,6 +31,7 @@ export default function DeleteEvent({
     });
 
     dispatch(setLoading({ boolValue: false }));
+    dispatch(changePage({ selectedPage: 1 }));
   }
 
   if (responseMessage.message !== "") {

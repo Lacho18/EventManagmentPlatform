@@ -26,8 +26,6 @@ function App() {
   const color = useSelector((state) => state.themeColor.color);
   const [currentPath, setCurrentPath] = useState("");
 
-  console.log(currentPath);
-
   useEffect(() => {
     setCurrentPath(location.pathname);
     connectWebSocket(

@@ -114,6 +114,11 @@ export default function EventsView({
                     onClick={() => {
                       selectPageHandler(index + 1);
                     }}
+                    style={
+                      color.color === "black"
+                        ? { color: "white", backgroundColor: color.heavyColor }
+                        : {}
+                    }
                   >
                     {index + 1}
                   </button>

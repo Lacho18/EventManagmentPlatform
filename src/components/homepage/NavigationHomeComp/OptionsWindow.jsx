@@ -4,6 +4,10 @@ import { logOut } from "../../../store/userSlice";
 import { toggleWindow, changeColor } from "../../../store/themeColorSlice";
 
 import { Link } from "react-router-dom";
+import {
+  clearCurrentMessages,
+  clearPrevChatsArray,
+} from "../../../store/chatsSlice";
 
 export default function OptionsWindow({ userData }) {
   const dispatch = useDispatch();
@@ -13,11 +17,24 @@ export default function OptionsWindow({ userData }) {
     dispatch(changeColor({ selection: selectedOption }));
   }
 
+  function logOutHandler() {
+    dispatch(logOut());
+    dispatch(changeColor({ selection: "gray" }));
+    dispatch(clearCurrentMessages());
+    dispatch(clearPrevChatsArray());
+  }
+
   return (
     <div className="absolute z-40 text-xl flex flex-col justify-between h-auto user-side-nav">
       {Object.keys(userData).length !== 0 ? (
         <div className="flex flex-col nav-user-window">
-          <button onClick={() => dispatch(logOut())}>Log out</button>
+          <button
+            onClick={() => {
+              logOutHandler();
+            }}
+          >
+            Log out
+          </button>
           <button
             onClick={(e) => {
               e.stopPropagation();

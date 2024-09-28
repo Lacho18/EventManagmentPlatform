@@ -9,7 +9,6 @@ import { sendMessage } from "../../webSocket";
 import {
   addChatWith,
   clearCurrentMessages,
-  setChatWithArray,
   setCurrentChatMessages,
 } from "../../store/chatsSlice";
 import { setsUserChats } from "../../store/userSlice";
@@ -17,7 +16,6 @@ import { setsUserChats } from "../../store/userSlice";
 export default function ChatsWindow({ color }) {
   const dispatch = useDispatch();
   const { senderId, receiverId } = useParams();
-  const userData = useSelector((state) => state.user.userData);
   const allMessages = useSelector((state) => state.chats.currentChatMessages);
   //Reversing the array and visualizing all data on reverse
   const allMessagesCopy = [...allMessages].reverse();
@@ -70,8 +68,6 @@ export default function ChatsWindow({ color }) {
     //Sends the message to the backend with the websocket
     sendMessage(messageStructure);
     dispatch(setsUserChats({ userChats: postMessage.data.userChats }));
-    //dispatch(setChatWithArray({ prevChats: postMessage.data.userChats }));
-    console.log(postMessage.data.message + " " + postMessage.data.userChats);
   }
 
   if (receiverMessagesName.current === "") return <div>Loading....</div>;

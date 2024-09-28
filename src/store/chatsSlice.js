@@ -15,11 +15,8 @@ const chatsSlice = createSlice({
         //Adds new message to the array in order to make real time chat application
         addNewMessage: (state, action) => {
             state.currentChatMessages = [...state.currentChatMessages, action.payload.newMessage];
-            console.log(action.payload.currentPath);
 
-            console.log(action.payload.currentPath);
             if (!action.payload.currentPath.includes('chat')) {
-                console.log("ARE ot purviq put");
                 state.unreadMessages = state.unreadMessages + 1;
             }
         },

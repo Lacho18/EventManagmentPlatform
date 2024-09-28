@@ -11,9 +11,7 @@ export const connectWebSocket = (url, dispatch, currentPath) => {
         };
 
         ws.onmessage = (event) => {
-            console.log(event.data);
-
-            //The message that is send with web socket ti the receiver and sender of the message
+            //The message that is send with web socket and the receiver and sender of the message
             const receivedMessage = JSON.parse(event.data);
             dispatch(addNewMessage({ newMessage: receivedMessage, currentPath: currentPath }));
             dispatch(setChatWithArray({ prevChats: receivedMessage.chats }));

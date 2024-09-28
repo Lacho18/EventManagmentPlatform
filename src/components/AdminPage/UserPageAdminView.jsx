@@ -55,12 +55,9 @@ export default function UserPageAdminView({ color }) {
   }, []);
 
   async function banUserHandler() {
-    console.log("Stava li neshto be!");
     const deleteResult = await useFetch("user", "DELETE", {
       id: currentUser.id,
     });
-
-    console.log(deleteResult.data);
 
     if (deleteResult.status === 200) {
       setDeleteUserResponse(deleteResult.data.message);

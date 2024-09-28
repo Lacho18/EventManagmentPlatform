@@ -33,8 +33,6 @@ export default function EventPage() {
   //State that toggles whether the email is shown or not
   const [shownEmail, setShownEmail] = useState(false);
 
-  console.log(userData);
-
   //gets the data for the selected event
   useEffect(() => {
     //Finds the selected event
@@ -53,8 +51,18 @@ export default function EventPage() {
 
     getEventData();
 
+    //Creates event that controls the click of the back button
+    window.addEventListener("popstate", () => {
+      navigate("/");
+    });
+
     return () => {
       dispatch(setLoading({ boolValue: true }));
+
+      //Removes the event that controls the click of the back button
+      window.removeEventListener("popstate", () => {
+        navigate("/");
+      });
     };
   }, []);
 

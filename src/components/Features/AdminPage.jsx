@@ -1,24 +1,8 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function AdminPage({ color }) {
-  const navigate = useNavigate();
   const userData = useSelector((state) => state.user.userData);
-
-  /*useEffect(() => {
-    //Creates event that controls the click of the back button
-    window.addEventListener("popstate", () => {
-      navigate("/");
-    });
-
-    return () => {
-      //Removes the event that controls the click of the back button
-      window.removeEventListener("popstate", () => {
-        navigate("/");
-      });
-    };
-  }, []);*/
 
   return (
     <div

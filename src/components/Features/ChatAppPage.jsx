@@ -7,13 +7,6 @@ import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { setChatWithArray, nullUnreadMessages } from "../../store/chatsSlice";
 
-/*
-  1. Ogleday proekta
-  2. Provery koi poleta da se mahnat ot update user (Dali e dobra ideq rolq da mojeda se smenq)
-  3. Napravi cifrite za stranica cherni na dark theme
-  4. Razgleday problemite sus saved items
-*/
-
 export default function ChatAppPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -21,8 +21,6 @@ export default function Home() {
   //Checks if the user has selected the saved items
   const onSavedItems = useSelector((state) => state.user.onSavedItems);
 
-  console.log(userData);
-
   return (
     <div
       className="w-screen h-scree overflow-hidden"

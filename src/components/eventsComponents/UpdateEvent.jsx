@@ -49,8 +49,6 @@ export default function UpdateEvent() {
           })
         );
 
-        console.log(result.data.data[0].location);
-
         //Changing the location field to an object. In the database location field is an array, but here it should be object
         dispatch(
           changeSingleEventHandler({

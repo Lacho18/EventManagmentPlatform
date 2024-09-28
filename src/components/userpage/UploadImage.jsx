@@ -15,7 +15,6 @@ export default function UploadImage({ userData, dispatch }) {
     });
 
     const response = await result.json();
-    console.log(response.message);
     dispatch(logIn(response.data));
   }
 

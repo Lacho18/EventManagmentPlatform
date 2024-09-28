@@ -21,7 +21,6 @@ const singleEventSlice = createSlice({
     },
     reducers: {
         changeSingleEventHandler: (state, action) => {
-            console.log(action.payload.name);
             //If the inserted data is for array and it has to be specialized
             if (Array.isArray(state.eventData[action.payload.name]) && action.payload.index !== -1) {
                 state.eventData[action.payload.name][action.payload.index] = action.payload.value;

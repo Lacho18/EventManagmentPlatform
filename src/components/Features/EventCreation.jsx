@@ -7,14 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { nullError, setError } from "../../store/errorSlice";
 
-/*
-  4. Napravi logikata za zakupuvaneto na bilet
-    4.1. ID na eventa da se dobavq v "willParticipate" masiva na potrebitelq
-    4.2. Da se dicrementira broq na mestata za eventa sled zakypka
-    4.3. Sumata ot kypeniq bilet da se dobavi kum "moneySpent" poleto na potrebitelq
-    4.4. Da se dobavi logika v koqto event ne moje da bude cuknat i izglejda po siv ili bezcveten ako veche nqma svobodni mesta
-*/
-
 export default function EventCreation() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -98,7 +90,6 @@ export default function EventCreation() {
     }
 
     dispatch(clearSingleEventState());
-    console.log(result.data.message);
   }
 
   if (!userData.id)
@@ -133,7 +124,10 @@ export default function EventCreation() {
             if (eventData[key] === null) {
               return (
                 <div key={key} className="p-2 m-3 text-lg formGroup">
-                  <label htmlFor={key}>
+                  <label
+                    htmlFor={key}
+                    style={color.color === "black" ? { color: "white" } : {}}
+                  >
                     Enter <span className="font-bold">{key}</span>
                   </label>
                   <input
@@ -141,6 +135,7 @@ export default function EventCreation() {
                     type="date"
                     name={key}
                     onChange={changeHandler}
+                    style={color.color === "black" ? { color: "black" } : {}}
                   />
                 </div>
               );
@@ -149,7 +144,10 @@ export default function EventCreation() {
             if (Array.isArray(eventData[key])) {
               return (
                 <div key={key} className="p-2 m-5 formGroup">
-                  <label htmlFor={key}>
+                  <label
+                    htmlFor={key}
+                    style={color.color === "black" ? { color: "white" } : {}}
+                  >
                     Enter event <span className="font-bold">{key}s</span>
                   </label>
                   {eventData[key].map((indexValue, index) => (
@@ -164,6 +162,9 @@ export default function EventCreation() {
                           name={key}
                           placeholder={key + " " + (index + 1)}
                           onChange={(e) => changeHandler(e, index)}
+                          style={
+                            color.color === "black" ? { color: "black" } : {}
+                          }
                         />
                         <button
                           type="button"
@@ -193,7 +194,10 @@ export default function EventCreation() {
 
               let component = subKeys.map((subKey, index) => (
                 <div key={index} className="p-2 m-5 subFormGroup">
-                  <label htmlFor={subKey}>
+                  <label
+                    htmlFor={subKey}
+                    style={color.color === "black" ? { color: "white" } : {}}
+                  >
                     Enter event <span className="font-bold">{subKey}</span>
                   </label>
                   <input
@@ -202,6 +206,7 @@ export default function EventCreation() {
                     name={key + "." + subKey}
                     placeholder={subKey}
                     onChange={changeHandler}
+                    style={color.color === "black" ? { color: "black" } : {}}
                   />
                 </div>
               ));
@@ -216,7 +221,10 @@ export default function EventCreation() {
 
             return (
               <div key={key} className="p-2 m-5 formGroup">
-                <label htmlFor={key}>
+                <label
+                  htmlFor={key}
+                  style={color.color === "black" ? { color: "white" } : {}}
+                >
                   Enter event <span className="font-bold">{key}</span>
                 </label>
                 <input
@@ -225,6 +233,7 @@ export default function EventCreation() {
                   name={key}
                   placeholder={key}
                   onChange={changeHandler}
+                  style={color.color === "black" ? { color: "black" } : {}}
                 />
               </div>
             );

@@ -90,6 +90,16 @@ export default function UpdateUser() {
     }
   }
 
+  //Removes fields from the iteration that can not be modified by the user himself
+  const userCopy = { ...user };
+  Object.defineProperties(userCopy, {
+    role: { enumerable: false },
+    savedEvents: { enumerable: false },
+    userImage: { enumerable: false },
+    chats: { enumerable: false },
+    willParticipate: { enumerable: false },
+  });
+
   if (Object.keys(user).length > 0) {
     return (
       <div
@@ -114,11 +124,15 @@ export default function UpdateUser() {
             className="flex flex-col justify-center"
             onSubmit={updateUserSubmitHandler}
           >
-            {userKeys.map((userField, index) => {
+            {Object.keys(userCopy).map((userField, index) => {
               if (userField !== "id" && userField !== "role") {
                 return (
                   <div key={index}>
-                    <label className="pt-2 font-bold" htmlFor={userField}>
+                    <label
+                      className="pt-2 font-bold"
+                      htmlFor={userField}
+                      style={color.color === "black" ? { color: "white" } : {}}
+                    >
                       Change your {userField}
                     </label>
                     <input

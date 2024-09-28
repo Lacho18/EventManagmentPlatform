@@ -7,9 +7,7 @@ const useFetch = async (route, method, data) => {
     let response = {};
     switch (method) {
         case "GET":
-            //console.log(data);
             if (data) {
-                console.log(data);
                 try {
                     response = await axios.get(url + route + "/?data=" + encodeURIComponent(JSON.stringify(data)));
                 } catch (error) {
@@ -40,7 +38,6 @@ const useFetch = async (route, method, data) => {
             break;
         case "DELETE":
             if (data) {
-                console.log(data);
                 try {
                     response = await axios.delete(url + route + "/?data=" + encodeURIComponent(JSON.stringify(data)));
                 } catch (error) {

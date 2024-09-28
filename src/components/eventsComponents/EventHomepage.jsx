@@ -67,6 +67,11 @@ export default function EventHomepage({
   function deleteEventHandler(id, e) {
     e.stopPropagation();
     setDeleteEvent(true);
+    setHover({
+      border: `3px solid ${color.hardColor}`,
+      backgroundColor: color.easyColor,
+      opacity: 1,
+    });
   }
 
   return (

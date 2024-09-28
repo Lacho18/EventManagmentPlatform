@@ -17,7 +17,6 @@ const userSlice = createSlice({
             firstName: "",
             lastName: "",
             gender: "",
-            //dateOfBirth: Date,
         }
     },
     reducers: {
