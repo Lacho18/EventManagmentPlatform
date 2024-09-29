@@ -29,3 +29,14 @@ The application has 3 roles for the users
 | /newEvent        | EventCreation | Page in which organizers create events.                                                                                                       |
 | /admin           | AdminLayout   | Visualize the admin page from where theme color can be created, and users can be banned.                                                      |
 | /\*              | PageNotFound  | Route that appears every time a non existing route is trying to be accessed.                                                                  |
+
+# Way to use
+
+On the home page events are visualized. By clicking on event box the user is navigated to the event page. <br>
+There is a empty user image icon on top left corner. If clicked buttons for log in and sign up appears. <br>
+After logging in on the top right part appears buttons that navigates to different futures for the application. <br>
+When logged in after clicking again on the user icon button appears for : logging out, changing theme color, updating profile and going to the chat application. <br>
+Organizers have button which navigates them to event creation page. <br>
+Admins have button to admin page, where they can delete users. <br>
+In order to create admin account you should include this word anywhere in the password : "?e1qOC". Also the email should have this domain "official.com" and the last name should include "\_admin". <br>
+In the chat application, selecting user to chat with happens by clicking on him. After that that chat appears and messages can be send. There are no limit to who everyone can chat. <br>
