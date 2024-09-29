@@ -38,6 +38,12 @@ export default function UpdateUser() {
     );
   }
 
+  function enterClickHandler(event) {
+    if (event.key === "Enter") {
+      updateUserSubmitHandler(event);
+    }
+  }
+
   //Handles the submit event. Sends the updated data
   async function updateUserSubmitHandler(event) {
     event.preventDefault();
@@ -123,6 +129,7 @@ export default function UpdateUser() {
           <form
             className="flex flex-col justify-center"
             onSubmit={updateUserSubmitHandler}
+            onKeyDown={enterClickHandler}
           >
             {Object.keys(userCopy).map((userField, index) => {
               if (userField !== "id" && userField !== "role") {

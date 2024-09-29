@@ -25,6 +25,12 @@ export default function LogIn() {
     }
   }, []);
 
+  function enterClickHandler(event) {
+    if (event.key === "Enter") {
+      submitHandler(event);
+    }
+  }
+
   async function submitHandler(event) {
     event.preventDefault();
 
@@ -73,6 +79,7 @@ export default function LogIn() {
       <form
         className="flex flex-col justify-center w-2/5 h-auto form-container"
         onSubmit={submitHandler}
+        onKeyDown={enterClickHandler}
         style={{ backgroundColor: color.lightColor }}
       >
         <div className="form-group">

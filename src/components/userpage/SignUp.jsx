@@ -35,6 +35,12 @@ export default function SignUp() {
     );
   }
 
+  function enterClickHandler(event) {
+    if (event.key === "Enter") {
+      submitHandler(event);
+    }
+  }
+
   async function submitHandler(event) {
     event.preventDefault();
 
@@ -79,6 +85,7 @@ export default function SignUp() {
       <form
         className="form-container"
         onSubmit={submitHandler}
+        onKeyDown={enterClickHandler}
         style={{ backgroundColor: color.lightColor }}
       >
         <div className="form-group">

@@ -52,22 +52,30 @@ export default function ChatsWindow({ color }) {
     getMessages();
   }, [receiverId]);
 
-  async function handleMessageSend() {
-    const messageStructure = {
-      senderId,
-      receiverId,
-      message: currentMessage,
-      time_of_send: new Date(),
-    };
+  function enterClickHandler(e) {
+    if (e.key === "Enter") {
+      handleMessageSend();
+    }
+  }
 
-    //Adds receiver id to the array of recent chats in order to send the new chat on left component
-    dispatch(addChatWith({ newChat: receiverId }));
-    //Clears the input tag after sending message
-    setCurrentMessage("");
-    const postMessage = await useFetch("chats", "POST", messageStructure);
-    //Sends the message to the backend with the websocket
-    sendMessage(messageStructure);
-    dispatch(setsUserChats({ userChats: postMessage.data.userChats }));
+  async function handleMessageSend() {
+    if (currentMessage !== "") {
+      const messageStructure = {
+        senderId,
+        receiverId,
+        message: currentMessage,
+        time_of_send: new Date(),
+      };
+
+      //Adds receiver id to the array of recent chats in order to send the new chat on left component
+      dispatch(addChatWith({ newChat: receiverId }));
+      //Clears the input tag after sending message
+      setCurrentMessage("");
+      const postMessage = await useFetch("chats", "POST", messageStructure);
+      //Sends the message to the backend with the websocket
+      sendMessage(messageStructure);
+      dispatch(setsUserChats({ userChats: postMessage.data.userChats }));
+    }
   }
 
   if (receiverMessagesName.current === "") return <div>Loading....</div>;
@@ -129,6 +137,7 @@ export default function ChatsWindow({ color }) {
             onChange={(e) => {
               setCurrentMessage(e.target.value);
             }}
+            onKeyDown={enterClickHandler}
           />
           <div className="basis-3/12 flex justify-between pl-3 pr-3">
             <button

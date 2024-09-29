@@ -54,6 +54,12 @@ export default function EventCreation() {
     );
   }
 
+  function enterClickHandler(e) {
+    if (e.key === "Enter") {
+      submitHandler();
+    }
+  }
+
   //Sends the inserted data to post the event and handles errors
   async function submitHandler(e) {
     e.preventDefault();
@@ -118,7 +124,7 @@ export default function EventCreation() {
         <p className="text-center text-sm italic">
           Please fill all text fields
         </p>
-        <form onSubmit={submitHandler}>
+        <form onSubmit={submitHandler} onKeyDown={enterClickHandler}>
           {keys.map((key) => {
             //Only if the key value is Date
             if (eventData[key] === null) {
